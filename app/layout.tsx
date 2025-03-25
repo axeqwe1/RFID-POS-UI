@@ -6,9 +6,12 @@ import { NavProvider } from "./contexts/NavContext";
 import { PageTransition } from "./components/layout/PageTransition";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-
+import localFont from 'next/font/local'
 // เพิ่มชุดไอคอนที่ต้องการใช้งาน
 library.add(fas);
+const kanitFont = localFont({
+  src:"../public/fonts/Kanit-Regular.ttf"
+})
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${kanitFont.className} antialiased`}
       >
         <NavProvider>
           <Navbar />
