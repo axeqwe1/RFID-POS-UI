@@ -8,7 +8,7 @@ interface MainscreenProps {
 
 export const Mainscreen:React.FC<MainscreenProps> = ({children}) => {
     return (
-        <div className="max-w-[1400px] mx-auto pt-[95px]">
+        <div className="max-w-[1400px] mx-auto h-full">
             {children}
         </div>
     )

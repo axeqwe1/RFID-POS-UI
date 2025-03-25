@@ -37,7 +37,7 @@ export default function RootLayout({
       >
         <NavProvider>
           <Navbar />
-            <div className="w-full h-full ">
+            <div className="w-full h-[calc(100vh)] pt-[85px] bg-gray-50">
               <PageTransition>{children}</PageTransition>
             </div>
         </NavProvider>

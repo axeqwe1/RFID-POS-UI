@@ -113,7 +113,7 @@ export default function RFIDScanScreen() {
     refNav.setNavname('Add Items')
   })
   return (
-    <div className="main min-h-screen  flex flex-col pt-[85px]">
+    <div className="main min-h-screen  flex flex-col">
       {/* ส่วน body: จำกัดความสูงและให้เลื่อนได้ */}
       <div className="body pt-6 px-12 pb-[180px] overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
         <div className="grid gap-2">

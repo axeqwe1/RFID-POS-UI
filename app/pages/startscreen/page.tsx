@@ -19,9 +19,9 @@ useEffect(() => {
   setNavmode(false);   // ถูกต้อง
 }, []);
   return (
-    <div className="flex justify-center items-center py-12 mx-[120px] h-[85vh]">
+    <div className="flex justify-center items-center mx-[60px] py-[2rem] h-full">
       <motion.button
-        className="btn btn-primary w-[100%] h-[100%] text-8xl rounded-3xl"
+        className="btn btn-primary w-[100%] h-[80vh] text-8xl rounded-3xl"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => handleNavigate('/pages/selectmember')} // ใช้ฟังก์ชันใหม่
