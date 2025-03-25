@@ -97,6 +97,14 @@ export default function RFIDScanScreen() {
         color: 'Brown',
         style: 'Vintage',
       },
+            {
+        id: '012',
+        name: 'Leather Jacket',
+        price: 1999.0,
+        size: 'S',
+        color: 'Brown',
+        style: 'Vintage',
+      },
     ],
     total: 3097.0,
     currency: 'THB',
@@ -113,9 +121,9 @@ export default function RFIDScanScreen() {
     refNav.setNavname('Add Items')
   })
   return (
-    <div className="main min-h-screen  flex flex-col">
+    <div className="main h-full  flex flex-col">
       {/* ส่วน body: จำกัดความสูงและให้เลื่อนได้ */}
-      <div className="body pt-6 px-12 pb-[180px] overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+      <div className="body p-6 overflow-y-auto h-[calc(100vh-280px)]" style={{ maxHeight: 'calc(100vh-190px)' }}>
         <div className="grid gap-2">
           {scanData.items.map((item) => (
             <div
