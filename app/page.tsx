@@ -4,8 +4,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Mainscreen } from './pages/mainscreen/page';
-import { Start } from './pages/startscreen/page';
+import  Mainscreen  from './pages/mainscreen/page';
+import  Start  from './pages/startscreen/page';
 export default function HomePage() {
   const [showModal, setShowModal] = useState(false);
 

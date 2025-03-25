@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNav } from '@/app/contexts/NavContext';
 
-export default function RFIDScanScreen() {
+const RFIDScanScreen = () => {
   const scanData = {
     items: [
       {
@@ -194,3 +194,5 @@ export default function RFIDScanScreen() {
     </div>
   );
 }
+
+export default RFIDScanScreen

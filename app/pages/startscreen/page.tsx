@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export const Start = () => {
+const Start = () => {
   const router = useRouter();
 
   const handleNavigate = (href: string) => {
@@ -31,3 +31,5 @@ useEffect(() => {
     </div>
   );
 };
+
+export default Start

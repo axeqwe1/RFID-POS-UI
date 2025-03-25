@@ -7,7 +7,7 @@ import { faArrowLeft, faArrowRight, faCreditCard, faHome, faInfoCircle } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNav } from '@/app/contexts/NavContext';
 import { useEffect } from 'react';
-export default function SelectMemberPage() {
+ const SelectMemberPage = () => {
   const buttonVariants = {
     tap: { scale: 0.95, opacity: 0.8 },
   };
@@ -45,3 +45,5 @@ useEffect(() => {
     </div>
   );
 }
+
+export default SelectMemberPage
