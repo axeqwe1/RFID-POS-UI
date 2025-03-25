@@ -19,12 +19,12 @@ useEffect(() => {
   setNavmode(false);   // ถูกต้อง
 }, []);
   return (
-    <div className="flex justify-center items-center mx-[60px] py-[2rem] h-full">
+    <div className="flex justify-center items-center mx-[60px] h-full">
       <motion.button
         className="btn btn-primary w-[100%] h-[80vh] text-8xl rounded-3xl"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => handleNavigate('/pages/selectmember')} // ใช้ฟังก์ชันใหม่
+        onClick={() => handleNavigate('/selectmember')} // ใช้ฟังก์ชันใหม่
       >
         START
       </motion.button>

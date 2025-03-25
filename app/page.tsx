@@ -1,21 +1,19 @@
-// src/app/page.tsx
+// app/page.tsx
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import  Mainscreen  from './pages/mainscreen/page';
-import  Start  from './pages/startscreen/page';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Start from './startscreen/page';
 export default function HomePage() {
-  const [showModal, setShowModal] = useState(false);
+  // const router = useRouter();
 
-  const buttonVariants = {
-    tap: { scale: 0.95, opacity: 0.8 },
-  };
+  // useEffect(() => {
+  //   router.push('/mainscreen');
+  // }, [router]);
 
   return (
-    <Mainscreen>
-       <Start/>
-    </Mainscreen>
-  );
+    <div className="max-w-[1400px] mx-auto h-full">
+      <Start/>
+    </div>
+  ); // หรือแสดง loading state
 }

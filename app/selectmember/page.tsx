@@ -31,7 +31,7 @@ useEffect(() => {
                 <h1 className='text-6xl text-center py-4 text-primary'>YES</h1>
               </div>
               <div className="bg-base-100 shadow-sm w-full h-[60vh]">
-                  <Link href={`/pages/RFIDScanScreen`}>
+                  <Link href={`/RFIDScanScreen`}>
                   <button className="btn btn-outline btn-default w-full h-full">
                     <h1 className='text-6xl'>NEXT</h1>
                     <span></span>

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNav } from '@/app/contexts/NavContext';
-
+import Link from 'next/link';
 const RFIDScanScreen = () => {
   const scanData = {
     items: [
@@ -158,9 +158,9 @@ const RFIDScanScreen = () => {
                     </p>
                 </div>
                 <div className="footer mt-3">
-                    <button className='btn btn-wide btn-outline btn-error text-3xl h-[60px] flex justify-center items-center'>
-                        Back
-                    </button>
+                  <Link href={`/`} className='btn btn-wide btn-outline btn-error text-3xl h-[60px] flex justify-center items-center'>
+                      Back
+                  </Link>
                 </div>
             </div>
             <button className='btn btn-outline btn-info' onClick={handdleState}>
@@ -177,10 +177,10 @@ const RFIDScanScreen = () => {
                 </div>
                 <div className="footer mt-3">
                     {isScan ? (
-                    <button className='btn btn-wide btn-outline btn-accent text-3xl h-[60px] flex justify-center items-center '>
+                    <Link href={`/`} className='btn btn-wide btn-outline btn-accent text-3xl h-[60px] flex justify-center items-center '>
                         <FontAwesomeIcon icon={faCheckCircle} />
                         Confirm
-                    </button>
+                    </Link>
                     ):(
                     <button className='btn btn-wide btn-outline btn-accent text-3xl h-[60px] flex justify-center items-center ' disabled>
                         <span className='loading loading-spinner text-2xl'></span>
