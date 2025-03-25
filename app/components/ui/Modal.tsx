@@ -102,13 +102,13 @@ export const Modal: React.FC<ModalProps> = ({
             <form method="dialog" className="flex justify-between items-center space-x-2 w-full">
               <div className="flex flex-row justify-between w-full h-[100px] max-w-[1100px] mx-auto">
                 <button
-                  className="btn btn-error text-4xl h-full w-[45%] min-w-[495px]"
+                  className="btn btn-error text-4xl h-full w-[45%] "
                   onClick={onClose}
                 >
                   {cancelText}
                 </button>
                 <button
-                  className="btn btn-primary text-4xl h-full w-[45%] min-w-[495px]"
+                  className="btn btn-primary text-4xl h-full w-[45%]"
                   onClick={handleConfirm}
                 >
                   {confirmText}
