@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "./components/ui/navbar";
+import { NavProvider } from "./contexts/NavContext";
+import { PageTransition } from "./components/layout/PageTransition";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
+// เพิ่มชุดไอคอนที่ต้องการใช้งาน
+library.add(fas);
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,12 +29,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <NavProvider>
+          <Navbar />
+            <div className="w-full h-full ">
+              <PageTransition>{children}</PageTransition>
+            </div>
+        </NavProvider>
       </body>
     </html>
   );
