@@ -6,7 +6,7 @@ import { useNav } from '@/app/contexts/NavContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const Navbar: React.FC = () => {
+const Navbar: React.FC = () => {
   const { navname, navmode } = useNav();
 
   return (
@@ -41,3 +41,5 @@ export const Navbar: React.FC = () => {
     </div>
   );
 };
+
+export default Navbar
