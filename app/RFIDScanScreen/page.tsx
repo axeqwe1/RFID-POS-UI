@@ -7,7 +7,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNav } from '@/app/contexts/NavContext';
 import Link from 'next/link';
 import { Modal } from '@/app/components/ui/Modal';
-import { AnimatePresence, motion } from 'framer-motion';
+
 import { Alert } from '../components/ui/Alert';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import LoadingThreeDotsJumping from '../components/ui/Loading';
@@ -205,7 +205,7 @@ const RFIDScanScreen = () => {
 
         )}
       </AnimatePresence> */}
-      <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-292px)] z-0" style={{ maxHeight: 'calc(100vh-292px)' }}>
+      <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-308px)] z-0" style={{ maxHeight: 'calc(100vh-292px)' }}>
         <div className="grid gap-3">
           {scanData.items.map((item) => (
             <div

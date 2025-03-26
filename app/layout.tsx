@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import localFont from 'next/font/local';
 import { AlertProvider } from "./contexts/AlertContext";
+import { CashierCalculatorProvider } from "./contexts/CashierCalculatorContext";
 // เพิ่มชุดไอคอนที่ต้องการใช้งาน
 library.add(fas);
 const kanitFont = localFont({
@@ -40,10 +41,12 @@ export default function RootLayout({
       >
         <NavProvider>
           <AlertProvider>
-            <Navbar />
-            <div className="relative w-full h-[calc(100vh)] pt-[100px] bg-gray-50">
-              <PageTransition>{children}</PageTransition>
-            </div>
+            <CashierCalculatorProvider>
+              <Navbar />
+              <div className="relative w-full h-[calc(100vh)] pt-[100px] bg-gray-50">
+                <PageTransition>{children}</PageTransition>
+              </div>
+            </CashierCalculatorProvider>
           </AlertProvider>
         </NavProvider>
       </body>

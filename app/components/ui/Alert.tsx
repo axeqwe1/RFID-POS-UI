@@ -58,6 +58,7 @@ export const Alert: React.FC<AlertProps> = ({
   }, [isOpen]);
 
   // กำหนดสีตามประเภทของ Alert
+
   const alertStyles = {
     success: { class: 'bg-success text-success-content' },
     error: { class: 'bg-error text-error-content' },
@@ -68,6 +69,7 @@ export const Alert: React.FC<AlertProps> = ({
   const { class: alertClass } = alertStyles[type];
 
   // ถ้าไม่ได้กำหนด Icon ให้ใช้ Icon ตาม type
+
   const defaultIcons: { [key: string]: IconDefinition } = {
     success: faCheckCircle,
     error: faExclamationCircle,
@@ -78,6 +80,7 @@ export const Alert: React.FC<AlertProps> = ({
   const selectedIcon = icon || defaultIcons[type];
 
   // Animation สำหรับ Backdrop
+
   const backdropVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } },
@@ -115,7 +118,7 @@ export const Alert: React.FC<AlertProps> = ({
 
   const handleConfirm = async () => {
     setIsClosing(true);
-    await new Promise<void>((resolve) => setTimeout(resolve, 300));
+    // await new Promise<void>((resolve) => setTimeout(resolve, 300));
     onConfirm();
     onClose();
   };
@@ -124,14 +127,14 @@ export const Alert: React.FC<AlertProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed top-0 left-0 w-screen h-screen z-[9999] bg-black bg-opacity-50 flex items-center justify-center will-change-opacity"
+          className="fixed top-0 left-0 w-screen h-screen z-[9999] back-drop-alert flex items-center justify-center will-change-opacity"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
         >
           <motion.div
-            className="bg-base-100 rounded-lg shadow-lg max-w-[800px] w-full max-h-[calc(100vh-18rem)] h-full p-[3rem]"
+            className="bg-base-100 rounded-lg shadow-lg max-w-[900px] w-full max-h-[calc(100vh-18rem)] h-full p-[3rem]"
             variants={alertBodyVariants}
             initial="hidden"
             animate="visible"

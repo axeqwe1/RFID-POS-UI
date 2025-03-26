@@ -3,31 +3,32 @@
 
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBill, faCreditCard, faQrcode } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
-import LoadingThreeDotsJumping from '../components/ui/Loading';
-import { useNav } from '../contexts/NavContext';
+import { faMoneyBill, faCreditCard, faQrcode, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { useCashierCalculator } from '../contexts/CashierCalculatorContext'; // เพิ่ม useCashierCalculator
 
 const PaymentScreen = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const refNav = useNav()
-  useEffect(() => {
-     refNav.setNavmode(false)
-     refNav.setNavname("Payment")
-  })
-  const handlePayment = async (method: string) => {
-    setIsLoading(true);
-    await new Promise<void>((resolve) => setTimeout(resolve, 1000)); // จำลองการชำระเงิน 1 วินาที
-    setIsLoading(false);
+  const { showCalculator } = useCashierCalculator(); // เรียกใช้ showCalculator
+
+  const totalAmount = 307000; // ยอดรวม (ตัวอย่าง)
+
+  const handlePayment = async (method: string, amountReceived?: number, change?: number) => {
     console.log(`ชำระเงินด้วย ${method}`);
-    // router.push('/PaymentSuccess');
+    if (method === 'เงินสด' && amountReceived !== undefined && change !== undefined) {
+      console.log(`รับเงิน: ${amountReceived} THB, เงินทอน: ${change} THB`);
+    }
+    router.push('/PaymentSuccess');
+  };
+
+  const handleCashPayment = () => {
+    showCalculator(totalAmount, (amountReceived, change) => {
+      handlePayment('เงินสด', amountReceived, change);
+    });
   };
 
   return (
     <div className="main w-full h-full">
       <div className="max-w-[1700px] px-[3rem] w-full h-[calc(100vh-292px)] py-3 mx-auto">
-        {/* First Card */}
         <div className="grid grid-cols-2 gap-3 h-full">
           <div className="flex flex-col justify-start items-center border-2 border-gray-100 rounded-md w-full">
             <div className="border-b-2 border-gray-400 w-full">
@@ -46,12 +47,11 @@ const PaymentScreen = () => {
               <p>1</p>
             </div>
           </div>
-          {/* Second Card */}
           <div className="border-2 border-gray-100 rounded-md w-full">
             <div className="flex flex-col justify-center items-center p-3">
               <button
                 className="btn btn-primary w-full h-[12vh] text-5xl my-2 flex flex-row items-center justify-start px-6 gap-6"
-                onClick={() => handlePayment('เงินสด')}
+                onClick={handleCashPayment}
               >
                 <FontAwesomeIcon icon={faMoneyBill} className="text-5xl" />
                 <span className="text-5xl">CASH</span>
@@ -77,8 +77,7 @@ const PaymentScreen = () => {
       <div className="footer fixed bottom-0 left-0 right-0 bg-base-100 p-4 shadow-inner border-t h-[190px] z-10">
         <div className="flex justify-between items-center w-full h-full mx-auto px-[1rem]">
           <div className="header">
-            <p className="text-4xl font-semibold">Items: </p>
-            <p className="text-xl text-base-content/70">Scanned at: </p>
+            <p className="text-4xl font-semibold">Total: {totalAmount.toFixed(2)} THB</p>
           </div>
         </div>
       </div>

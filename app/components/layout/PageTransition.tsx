@@ -63,7 +63,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
       if (pathname === '/' && !isAnimating) {
         console.log('Swiped left, going to /pages/about');
         setIsAnimating(true);
-        router.push('/pages/about');
+        router.push('/selectmember');
       }
     },
     onSwipedRight: () => {
@@ -85,7 +85,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
-        {...handlers}
+        // {...handlers}
         key={currentPath}
         variants={variants}
         initial="initial"
