@@ -9,6 +9,7 @@ import HomePage from '@/app/page';
 import SelectMemberPage from '@/app/selectmember/page';
 import RFIDScanScreen from '@/app/RFIDScanScreen/page';
 import PaymentScreen from '@/app/PaymentScreen/page';
+import PaymentSuccess from '@/app/PaymentScreen/PaymentSuccess/page';
 interface PageTransitionProps {
   children: ReactNode;
 }
@@ -23,7 +24,8 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     '/': <HomePage />,
     '/selectmember': <SelectMemberPage />,
     '/RFIDScanScreen': <RFIDScanScreen/>,
-    '/PaymentScreen': <PaymentScreen/>
+    '/PaymentScreen': <PaymentScreen/>,
+    '/PaymentScreen/PaymentSuccess': <PaymentSuccess/>
   };
 
   const [displayedPage, setDisplayedPage] = useState<ReactNode>(pages[pathname] || children);

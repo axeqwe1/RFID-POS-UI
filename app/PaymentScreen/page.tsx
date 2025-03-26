@@ -3,12 +3,12 @@
 
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBill, faCreditCard, faQrcode, faCalculator } from '@fortawesome/free-solid-svg-icons';
-import { useCashierCalculator } from '../contexts/CashierCalculatorContext'; // เพิ่ม useCashierCalculator
+import { faMoneyBill, faCreditCard, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { useCashierCalculator } from '../contexts/CashierCalculatorContext';
 
 const PaymentScreen = () => {
   const router = useRouter();
-  const { showCalculator } = useCashierCalculator(); // เรียกใช้ showCalculator
+  const { showCalculator } = useCashierCalculator();
 
   const totalAmount = 307000; // ยอดรวม (ตัวอย่าง)
 
@@ -17,7 +17,10 @@ const PaymentScreen = () => {
     if (method === 'เงินสด' && amountReceived !== undefined && change !== undefined) {
       console.log(`รับเงิน: ${amountReceived} THB, เงินทอน: ${change} THB`);
     }
-    router.push('/PaymentSuccess');
+    // ส่งข้อมูลไปยัง PaymentSuccess ผ่าน query parameters
+    router.push(
+      `/PaymentScreen/PaymentSuccess?method=${encodeURIComponent(method)}&totalAmount=${totalAmount}&amountReceived=${amountReceived || ''}&change=${change || ''}`
+    );
   };
 
   const handleCashPayment = () => {
