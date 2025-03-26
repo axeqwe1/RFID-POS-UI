@@ -35,19 +35,20 @@ const PaymentScreen = () => {
         <div className="grid grid-cols-2 gap-3 h-full">
           <div className="flex flex-col justify-start items-center border-2 border-gray-100 rounded-md w-full">
             <div className="border-b-2 border-gray-400 w-full">
-              <div className="flex flex-row justify-between max-w-[85vh] mx-auto py-6">
+              <div className="flex flex-row justify-between  mx-auto py-6 px-12">
                 <div>
-                  <p>1</p>
-                  <p>2</p>
+                  <h1 className='text-2xl'>Total Item (10 Item)</h1>
+                  <h2 className='text-2xl'>Tax</h2>
                 </div>
                 <div>
-                  <p>2</p>
-                  <p>3</p>
+                  <h1 className='text-2xl'>80.00 Bath</h1>
+                  <h2 className='text-2xl'>0.00 Bath</h2>
                 </div>
               </div>
             </div>
-            <div>
-              <p>1</p>
+            <div className='flex flex-row justify-between w-full py-6 px-12'>
+              <h1 className='text-2xl'>Total</h1>
+              <h1 className='text-2xl'>39.00 Bath</h1>
             </div>
           </div>
           <div className="border-2 border-gray-100 rounded-md w-full">
@@ -85,8 +86,14 @@ const PaymentScreen = () => {
       </div>
       <div className="footer fixed bottom-0 left-0 right-0 bg-base-100 p-4 shadow-inner border-t h-[190px] z-10">
         <div className="flex justify-between items-center w-full h-full mx-auto px-[1rem]">
-          <div className="header">
-            <p className="text-4xl font-semibold">Total: {totalAmount.toFixed(2)} THB</p>
+          <div className="header flex flex-col h-full w-full justify-between py-3">
+            <div className='text-2xl'><input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                Test
+            </div>
+            <button className='btn btn-outline btn-error btn-wide h-[4rem] text-3xl'>Back</button>
+          </div>
+          <div className="flex flex-col h-full w-full justify-between py-3">
+
           </div>
         </div>
       </div>
