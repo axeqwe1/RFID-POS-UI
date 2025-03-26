@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBill, faCreditCard, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { useCashierCalculator } from '../contexts/CashierCalculatorContext';
-
+import { motion } from 'framer-motion';
 const PaymentScreen = () => {
   const router = useRouter();
   const { showCalculator } = useCashierCalculator();
@@ -52,27 +52,33 @@ const PaymentScreen = () => {
           </div>
           <div className="border-2 border-gray-100 rounded-md w-full">
             <div className="flex flex-col justify-center items-center p-3">
-              <button
+              <motion.button
+                whileHover={{scale:1.01}}
+                whileTap={{scale:0.98}}
                 className="btn btn-primary w-full h-[12vh] text-5xl my-2 flex flex-row items-center justify-start px-6 gap-6"
                 onClick={handleCashPayment}
               >
                 <FontAwesomeIcon icon={faMoneyBill} className="text-5xl" />
                 <span className="text-5xl">CASH</span>
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{scale:1.01}}
+                whileTap={{scale:0.98}}
                 className="btn btn-primary w-full h-[12vh] text-5xl my-2 flex flex-row items-center justify-start px-6 gap-6"
                 onClick={() => handlePayment('บัตรเครดิต')}
               >
                 <FontAwesomeIcon icon={faCreditCard} className="text-5xl" />
                 <span className="text-5xl">Credit Card</span>
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{scale:1.01}}
+                whileTap={{scale:0.98}}
                 className="btn btn-primary w-full h-[12vh] text-5xl my-2 flex flex-row items-center justify-start px-6 gap-6"
                 onClick={() => handlePayment('QR Code')}
               >
                 <FontAwesomeIcon icon={faQrcode} className="text-5xl" />
                 <span className="text-5xl">QR Code</span>
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>
