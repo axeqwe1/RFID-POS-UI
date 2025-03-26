@@ -8,6 +8,9 @@ import { faCheckCircle, faPrint } from '@fortawesome/free-solid-svg-icons';
 import { motion, Variants } from 'framer-motion';
 import { useNav } from '@/app/contexts/NavContext';
 
+
+export const dynamic = 'force-dynamic';
+
 const PaymentSuccess = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
