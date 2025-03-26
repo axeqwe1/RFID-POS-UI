@@ -1,4 +1,4 @@
-// app/PaymentSuccess/page.tsx
+// app/PaymentScreen/PaymentSuccess/page.tsx
 'use client';
 
 import { useEffect } from 'react';
@@ -8,13 +8,14 @@ import { faCheckCircle, faPrint } from '@fortawesome/free-solid-svg-icons';
 import { motion, Variants } from 'framer-motion';
 import { useNav } from '@/app/contexts/NavContext';
 
-
+// ปิดการใช้งาน static generation
 export const dynamic = 'force-dynamic';
 
 const PaymentSuccess = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const refNav = useNav()
+  const refNav = useNav();
+
   // ดึงข้อมูลจาก query parameters
   const totalAmount = parseFloat(searchParams.get('totalAmount') || '0');
   const amountReceived = parseFloat(searchParams.get('amountReceived') || '0');
@@ -64,14 +65,14 @@ const PaymentSuccess = () => {
 
   // กลับไปหน้าแรกหลังจาก 10 วินาที (ถ้าผู้ใช้ไม่กดปุ่ม)
   useEffect(() => {
-    refNav.setNavmode(false)
-    refNav.setNavname("Payment Success")
+    refNav.setNavmode(false);
+    refNav.setNavname('Payment Success');
     // const timer = setTimeout(() => {
     //   router.push('/');
     // }, 10000); // 10 วินาที
 
     // return () => clearTimeout(timer);
-  }, [router]);
+  }, [router, refNav]);
 
   // ฟังก์ชันสำหรับพิมพ์ใบเสร็จ
   const handlePrint = () => {
