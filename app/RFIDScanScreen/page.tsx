@@ -11,12 +11,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Alert } from '../components/ui/Alert';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import LoadingThreeDotsJumping from '../components/ui/Loading';
-
+import { useRouter } from 'next/navigation';
+import { useAlert } from '../contexts/AlertContext';
 const RFIDScanScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isScan, setScan] = useState(true);
   const [isLoading,setLoading] = useState(true)
+  const router = useRouter()
   const handleState = () => {
     setScan(!isScan);
   };
@@ -31,11 +33,11 @@ const RFIDScanScreen = () => {
     refNav.setNavmode(true);
     refNav.setNavname('Add Items');
 
-    const timer = setTimeout(() => {
-      setLoading(false)
-    },3000)
+    // const timer = setTimeout(() => {
+    //   setLoading(false)
+    // },3000)
 
-    return () => clearTimeout(timer)
+    // return () => clearTimeout(timer)
   }, [refNav]);
 
   // เพิ่ม/ลบ class modal-open เมื่อ Modal เปิด/ปิด
@@ -158,7 +160,7 @@ const RFIDScanScreen = () => {
   };
 
   const handleConfirmTransaction = () => {
-    console.log('Transaction confirmed!');
+     router.push('/PaymentScreen')
   };
 
   const modalVariants = {
@@ -181,11 +183,12 @@ const RFIDScanScreen = () => {
       },
     },
   };
+  const { showAlert } = useAlert();
 
   return (
     
     <div className="main h-full flex flex-col z-0 font-kanit scrollbar-gutter">
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {isAlertOpen && (
             <Alert
               isOpen={isAlertOpen}
@@ -201,8 +204,8 @@ const RFIDScanScreen = () => {
             />
 
         )}
-      </AnimatePresence>
-      <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-345px)] z-0" style={{ maxHeight: 'calc(100vh-300px)' }}>
+      </AnimatePresence> */}
+      <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-292px)] z-0" style={{ maxHeight: 'calc(100vh-292px)' }}>
         <div className="grid gap-3">
           {scanData.items.map((item) => (
             <div
@@ -227,17 +230,17 @@ const RFIDScanScreen = () => {
           ))}
         </div>
       </div>
-      <div className="footer fixed bottom-0 left-0 right-0 bg-base-100 p-4 shadow-inner border-t h-[260px] z-10">
+      <div className="footer fixed bottom-0 left-0 right-0 bg-base-100 p-4 shadow-inner border-t h-[210px] z-10">
         <div className="max-w-[1700px] flex justify-between items-center w-full h-full mx-auto px-[1rem]">
           <div className='w-full flex flex-col'>
             <div className="header">
-              <p className="text-3xl font-semibold">Items: {scanData.totalItems}</p>
+              <p className="text-4xl font-semibold">Items: {scanData.totalItems}</p>
               <p className="text-xl text-base-content/70">
                 Scanned at: {new Date(scanData.scanTime).toLocaleString()}
               </p>
             </div>
             <div className="footer mt-3">
-              <Link href={`/`} className="btn btn-outline btn-error text-3xl h-[100px] w-[40vh] flex justify-center items-center">
+              <Link href={`/`} className="btn btn-outline btn-error text-3xl h-[90px] w-[40vh] flex justify-center items-center">
                 Back
               </Link>
             </div>
@@ -256,17 +259,24 @@ const RFIDScanScreen = () => {
               {isScan ? (
                 <button
                   onClick={() => {
-                    console.log('Opening modal');
-                    setIsAlertOpen(true);
+                      showAlert({
+                          title: 'แจ้งเตือน',
+                          message: 'คุณต้องการสั่งซื้อจำนวน 4 ชิ้น หรือไม่?',
+                          confirmText: 'ตกลง',
+                          cancelText: 'ยกเลิก',
+                          type: 'warning',
+                          icon: faInfoCircle,
+                          onConfirm: () => router.push('/PaymentScreen'),
+                      })
                   }}
-                  className="btn btn-outline btn-accent text-3xl h-[100px] w-[40vh] flex justify-center items-center"
+                  className="btn btn-outline btn-accent text-3xl h-[90px] w-[40vh] flex justify-center items-center"
                 >
                   <FontAwesomeIcon icon={faCheckCircle} />
                   Confirm
                 </button>
               ) : (
                 <button
-                  className="btn btn-outline btn-accent text-3xl h-[100px] w-[40vh] flex justify-center items-center"
+                  className="btn btn-outline btn-accent text-3xl h-[90px] w-[40vh] flex justify-center items-center"
                   disabled
                 >
                   <span className="loading loading-spinner text-2xl"></span>

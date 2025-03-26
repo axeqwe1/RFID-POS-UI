@@ -4,14 +4,12 @@
 import { motion, Variants } from 'framer-motion';
 
 interface LoadingThreeDotsJumpingProps {
-  isLoading?: boolean; // เพิ่ม prop เพื่อควบคุมการแสดง
+  isLoading?: boolean;
 }
 
 export default function LoadingThreeDotsJumping({ isLoading = true }: LoadingThreeDotsJumpingProps) {
-  // ถ้าไม่โหลด ให้ return null
   if (!isLoading) return null;
 
-  // Animation สำหรับจุด
   const dotVariants: Variants = {
     jump: {
       y: -30,
@@ -24,7 +22,6 @@ export default function LoadingThreeDotsJumping({ isLoading = true }: LoadingThr
     },
   };
 
-  // Animation สำหรับ Backdrop
   const backdropVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } },
@@ -32,20 +29,27 @@ export default function LoadingThreeDotsJumping({ isLoading = true }: LoadingThr
   };
 
   return (
-    <div
-      className="fixed top-0 inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center"
-    //   role="status"
-    //   aria-label="กำลังโหลด"
+    <motion.div
+      className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center"
+      variants={backdropVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      role="status"
+      aria-label="กำลังโหลด"
     >
-      <motion.div
-        className="flex justify-center items-center gap-3"
-        animate="jump"
-        transition={{ staggerChildren: 0.2, staggerDirection: 1 }}
-      >
-        <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
-        <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
-        <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
-      </motion.div>
-    </div>
+      <div className="flex flex-col items-center gap-4">
+        <motion.div
+          className="flex justify-center items-center gap-3"
+          animate="jump"
+          transition={{ staggerChildren: 0.2, staggerDirection: 1 }}
+        >
+          <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
+          <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
+          <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
+        </motion.div>
+        <p className="text-white text-2xl">กำลังโหลด...</p>
+      </div>
+    </motion.div>
   );
 }

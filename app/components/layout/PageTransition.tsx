@@ -8,7 +8,7 @@ import { useSwipeable } from 'react-swipeable';
 import HomePage from '@/app/page';
 import SelectMemberPage from '@/app/selectmember/page';
 import RFIDScanScreen from '@/app/RFIDScanScreen/page';
-
+import PaymentScreen from '@/app/PaymentScreen/page';
 interface PageTransitionProps {
   children: ReactNode;
 }
@@ -19,32 +19,22 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const [currentPath, setCurrentPath] = useState(pathname);
   const [isAnimating, setIsAnimating] = useState(false);
 
-const pages: { [key: string]: ReactNode } = {
-  '/': <HomePage />,
-  '/selectmember': <SelectMemberPage />,
-  '/RFIDScanScreen': <RFIDScanScreen />
-};
+  const pages: { [key: string]: ReactNode } = {
+    '/': <HomePage />,
+    '/selectmember': <SelectMemberPage />,
+    '/RFIDScanScreen': <RFIDScanScreen/>,
+    '/PaymentScreen': <PaymentScreen/>
+  };
 
   const [displayedPage, setDisplayedPage] = useState<ReactNode>(pages[pathname] || children);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
 
-  const simulateLoading = async () => {
-    try {
-      // จำลองการโหลด
-      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
-      setHasError(true);
-      throw error;
-    }
-  };
   const waitForAnimation = () =>
     new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
       }, 200); // รอ 300ms (เท่ากับ duration ของ transition)
     });
-    
+
   const handlePageChange = async (newPathname: string) => {
     if (currentPath !== newPathname) {
       setIsAnimating(true);
@@ -95,7 +85,7 @@ const pages: { [key: string]: ReactNode } = {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
-        // {...handlers}
+        {...handlers}
         key={currentPath}
         variants={variants}
         initial="initial"

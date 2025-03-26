@@ -6,7 +6,8 @@ import { NavProvider } from "./contexts/NavContext";
 import { PageTransition } from "./components/layout/PageTransition";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import localFont from 'next/font/local'
+import localFont from 'next/font/local';
+import { AlertProvider } from "./contexts/AlertContext";
 // เพิ่มชุดไอคอนที่ต้องการใช้งาน
 library.add(fas);
 const kanitFont = localFont({
@@ -32,17 +33,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en" data-theme="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${kanitFont.className} antialiased m-0`}
       >
         <NavProvider>
-          <Navbar />
-            <div className="w-full h-[calc(100vh)] pt-[85px] bg-gray-50">
+          <AlertProvider>
+            <Navbar />
+            <div className="relative w-full h-[calc(100vh)] pt-[100px] bg-gray-50">
               <PageTransition>{children}</PageTransition>
             </div>
+          </AlertProvider>
         </NavProvider>
       </body>
     </html>
