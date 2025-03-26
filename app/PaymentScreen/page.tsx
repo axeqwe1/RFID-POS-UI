@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBill, faCreditCard, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { useCashierCalculator } from '../contexts/CashierCalculatorContext';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 const PaymentScreen = () => {
   const router = useRouter();
   const { showCalculator } = useCashierCalculator();
@@ -90,7 +91,10 @@ const PaymentScreen = () => {
             <div className='text-2xl'><input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
                 Test
             </div>
-            <button className='btn btn-outline btn-error btn-wide h-[4rem] text-3xl'>Back</button>
+            <Link href={`/RFIDScanScreen`}>
+                <button className='btn btn-outline btn-error btn-wide h-[4rem] text-3xl'>Back</button>
+            </Link>
+
           </div>
           <div className="flex flex-col h-full w-full justify-between py-3">
 
