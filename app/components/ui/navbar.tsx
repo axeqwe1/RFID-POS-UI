@@ -10,8 +10,8 @@ const Navbar: React.FC = () => {
   const { navname, navmode } = useNav();
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-base-200 shadow-sm h-[85px] flex justify-center items-center">
-      <div className="navbar max-w-[1600px] mx-auto py-6">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-base-200 shadow-sm h-[100px] flex justify-center items-center">
+      <div className="navbar max-w-[1600px] mx-auto px-[3rem]">
         <div className="navbar-start flex items-center">
           <Link href="/">
             <Image
@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
         {navmode ? (
           <div className="navbar-end">
             <Link href="/">
-              <button className="border-3 btn btn-outline btn-primary w-[240px] h-[60px] font-medium text-3xl">
+              <button className="border-3 btn btn-soft btn-primary w-[240px] h-[80px] font-medium text-3xl">
                 Restart
               </button>
             </Link>

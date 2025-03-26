@@ -34,9 +34,9 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en">
+    <html lang="en" >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${kanitFont.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${kanitFont.className} antialiased m-0`}
       >
         <NavProvider>
           <Navbar />

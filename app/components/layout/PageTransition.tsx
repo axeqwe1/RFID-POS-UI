@@ -95,7 +95,7 @@ const pages: { [key: string]: ReactNode } = {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
-        {...handlers}
+        // {...handlers}
         key={currentPath}
         variants={variants}
         initial="initial"

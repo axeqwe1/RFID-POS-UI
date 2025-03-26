@@ -31,6 +31,21 @@ export const Modal: React.FC<ModalProps> = ({
 
   console.log('Modal rendering, isOpen:', isOpen); // Debug log
 
+  // ล็อก <body> เมื่อ Modal เปิด และปลดล็อกเมื่อปิด
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    // Cleanup เมื่อ component unmount หรือเมื่อ isOpen เปลี่ยน
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isOpen]);
+
+  // จัดการเปิด/ปิด Modal ด้วย <dialog>
   useEffect(() => {
     const dialog = dialogRef.current;
     if (dialog) {
@@ -69,7 +84,7 @@ export const Modal: React.FC<ModalProps> = ({
       scale: [1, 1.2, 1],
       transition: {
         repeat: Infinity,
-        repeatType: 'loop' as const, // ระบุให้เป็น literal type
+        repeatType: 'loop' as const,
         duration: 1.5,
       },
     },
@@ -102,7 +117,7 @@ export const Modal: React.FC<ModalProps> = ({
             <form method="dialog" className="flex justify-between items-center space-x-2 w-full">
               <div className="flex flex-row justify-between w-full h-[100px] max-w-[1100px] mx-auto">
                 <button
-                  className="btn btn-error text-4xl h-full w-[45%] "
+                  className="btn btn-error text-4xl h-full w-[45%]"
                   onClick={onClose}
                 >
                   {cancelText}
