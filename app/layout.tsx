@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en" >
+    <html lang="en" data-theme="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${kanitFont.className} antialiased m-0`}
       >

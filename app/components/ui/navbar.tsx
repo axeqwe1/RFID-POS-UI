@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-base-200 shadow-sm h-[100px] flex justify-center items-center">
-      <div className="navbar max-w-[1600px] mx-auto px-[3rem]">
+      <div className="navbar max-w-[1800px] mx-auto px-[3rem]">
         <div className="navbar-start flex items-center">
           <Link href="/">
             <Image

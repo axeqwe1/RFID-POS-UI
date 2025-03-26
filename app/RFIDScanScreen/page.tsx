@@ -228,7 +228,7 @@ const RFIDScanScreen = () => {
         </div>
       </div>
       <div className="footer fixed bottom-0 left-0 right-0 bg-base-100 p-4 shadow-inner border-t h-[260px] z-10">
-        <div className="max-w-[1700px] flex justify-between items-center w-full h-full mx-auto px-[3rem]">
+        <div className="max-w-[1700px] flex justify-between items-center w-full h-full mx-auto px-[1rem]">
           <div className='w-full flex flex-col'>
             <div className="header">
               <p className="text-3xl font-semibold">Items: {scanData.totalItems}</p>
