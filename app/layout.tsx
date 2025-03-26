@@ -44,7 +44,9 @@ export default function RootLayout({
             <CashierCalculatorProvider>
               <Navbar />
               <div className="relative w-full h-[calc(100vh)] pt-[100px] bg-gray-50">
-                <PageTransition>{children}</PageTransition>
+                <PageTransition>
+                  {children}
+                </PageTransition>
               </div>
             </CashierCalculatorProvider>
           </AlertProvider>

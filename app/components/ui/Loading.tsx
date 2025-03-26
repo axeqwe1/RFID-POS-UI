@@ -8,8 +8,10 @@ interface LoadingThreeDotsJumpingProps {
 }
 
 export default function LoadingThreeDotsJumping({ isLoading = true }: LoadingThreeDotsJumpingProps) {
+    console.log("from loading")
+    console.log(isLoading)
   if (!isLoading) return null;
-
+ 
   const dotVariants: Variants = {
     jump: {
       y: -30,
@@ -44,9 +46,9 @@ export default function LoadingThreeDotsJumping({ isLoading = true }: LoadingThr
           animate="jump"
           transition={{ staggerChildren: 0.2, staggerDirection: 1 }}
         >
-          <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
-          <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
-          <motion.div className="w-5 h-5 rounded-full bg-pink-500" variants={dotVariants} />
+          <motion.div className="w-5 h-5 rounded-full bg-primary" variants={dotVariants} />
+          <motion.div className="w-5 h-5 rounded-full bg-primary" variants={dotVariants} />
+          <motion.div className="w-5 h-5 rounded-full bg-primary" variants={dotVariants} />
         </motion.div>
         <p className="text-white text-2xl">กำลังโหลด...</p>
       </div>
