@@ -6,18 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNav } from '@/app/contexts/NavContext';
 import Link from 'next/link';
-import { Modal } from '@/app/components/ui/Modal';
 
-import { Alert } from '../components/ui/Alert';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import LoadingThreeDotsJumping from '../components/ui/Loading';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '../contexts/AlertContext';
 const RFIDScanScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isScan, setScan] = useState(true);
-  const [isLoading,setLoading] = useState(true)
   const router = useRouter()
   const handleState = () => {
     setScan(!isScan);

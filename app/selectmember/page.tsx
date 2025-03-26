@@ -24,22 +24,28 @@ useEffect(() => {
           </div>
           <div className="">
             <div className='grid grid-cols-2 gap-6'>
-              <div className="bg-base-100 shadow-xl w-full h-full">
+              <div className=" w-full h-full">
                 <div className='h-full'>
-                  <button className="btn btn-soft btn-primary w-full h-full">
+                  <motion.button 
+                  whileHover={{scale:1.02}}
+                  whileTap={{scale:0.96}}
+                  className="btn btn-soft btn-primary w-full h-full shadow-md">
                     <h1 className='text-6xl'>Scan in something</h1>
-                  </button>
+                  </motion.button>
                   <h1 className='text-6xl text-primary text-center'>YES</h1>
                 </div>
               </div>
-              <div className="bg-base-100 shadow-sm w-full h-[60vh]">
+              <div className=" w-full h-[60vh]">
                   <Link href={`/RFIDScanScreen`}>
                     <div className="h-full">
-                        <button className="btn btn-soft btn-default w-full h-full">
+                        <motion.button 
+                        whileHover={{scale:1.02}}
+                        whileTap={{scale:0.96}}
+                        className="btn btn-soft btn-default w-full h-full shadow-md">
                           <h1 className='text-6xl'>NEXT</h1>
                           <span></span>
                           <FontAwesomeIcon icon={faArrowRight} className='text-6xl'/>
-                        </button>
+                        </motion.button>
                         <h1 className='text-6xl text-default text-center'>NO</h1>
                     </div>
                   </Link>
