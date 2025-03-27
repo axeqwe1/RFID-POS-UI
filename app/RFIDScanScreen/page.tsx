@@ -273,7 +273,7 @@ useEffect(() => {
             <div className="header">
               <p className="text-4xl font-semibold">Items: {tagData.reduce((acc,current) => acc + current.Qty, 0)}</p>
               <p className="text-xl text-base-content/70">
-                Scanned at: {new Date(scanData.scanTime).toLocaleString()}
+                Scanned at: {new Date().toLocaleString()}
               </p>
             </div>
             <div className="footer mt-3">
