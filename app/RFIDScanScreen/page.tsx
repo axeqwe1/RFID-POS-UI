@@ -17,8 +17,9 @@ import { ProductinCart } from '../types/ProductInCart';
 const RFIDScanScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [isScan, setScan] = useState(true);
+  const [isScan, setScan] = useState(false);
   const [tagData,setTagData] = useState<Array<ProductinCart>>([])
+  const [date,setDate] = useState<string>();
   const router = useRouter()
 
 
@@ -69,6 +70,7 @@ useEffect(() => {
 
         // Set state ครั้งเดียวหลังจาก loop เสร็จ
         setTagData(productList);
+        tagData.length < 0 ? setScan(true) : setScan(false)
       } catch (err: any) {
         console.error('Error fetching RFID data:', err);
       } finally {
@@ -77,7 +79,7 @@ useEffect(() => {
 
     // เรียก loadTagsData ครั้งแรกทันที
     loadTagsData();
-
+    setDate(new Date().toLocaleString())
     // ตั้ง interval เพื่อ fetch ทุกๆ 1 วินาที
     const intervalId = setInterval(() => {
       loadTagsData();
@@ -86,9 +88,6 @@ useEffect(() => {
     // Cleanup interval เมื่อ component unmount
     return () => clearInterval(intervalId);
   }, [refNav]); // ขึ้นอยู่กับ refNav
-
-
-
 
   const scanData = {
     items: [
@@ -273,7 +272,7 @@ useEffect(() => {
             <div className="header">
               <p className="text-4xl font-semibold">Items: {tagData.reduce((acc,current) => acc + current.Qty, 0)}</p>
               <p className="text-xl text-base-content/70">
-                Scanned at: {new Date().toLocaleString()}
+                Scanned at: {date}
               </p>
             </div>
             <div className="footer mt-3">
@@ -293,7 +292,7 @@ useEffect(() => {
               <p className="text-2xl text-base-content">tax: 7%</p>
             </div>
             <div className="footer-t mt-3">
-              {isScan ? (
+              {tagData.length > 0 ? (
                 <button
                   onClick={() => {
                       showAlert({
