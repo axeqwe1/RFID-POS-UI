@@ -11,11 +11,17 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '../contexts/AlertContext';
 import { Alert } from '../components/ui/Alert';
+import { fetchRFID } from '../lib/api/RFIDapi';
+import { ProductinCart } from '../types/ProductInCart';
+
 const RFIDScanScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isScan, setScan] = useState(true);
+  const [tagData,setTagData] = useState<Array<ProductinCart>>([])
   const router = useRouter()
+
+
   const handleState = () => {
     setScan(!isScan);
   };
@@ -26,30 +32,63 @@ const RFIDScanScreen = () => {
   };
 
   const refNav = useNav();
-  useEffect(() => {
-    refNav.setNavmode(true);
-    refNav.setNavname('Add Items');
+useEffect(() => {
+    const loadTagsData = async () => {
+      try {
+        const data = await fetchRFID();
+        // console.log('Fetched RFID Data:', data);
 
-    // const timer = setTimeout(() => {
-    //   setLoading(false)
-    // },3000)
+        // เข้าถึง GETDATA จาก response
+        const rfidItems = data;
 
-    // return () => clearTimeout(timer)
-  }, [refNav]);
+        // แปลงข้อมูลเป็น ProductInCart
+        const productList: ProductinCart[] = [];
+        for (let i = 0; i < rfidItems.length; i++) {
+          const existingProduct = productList.find(
+            (item) =>
+              item.ProductName === rfidItems[i].ProductName &&
+              item.Size === rfidItems[i].Size &&
+              item.Color === rfidItems[i].Color
+          );
 
-  // เพิ่ม/ลบ class modal-open เมื่อ Modal เปิด/ปิด
-  // useEffect(() => {
-  //   if (isModalOpen) {
-  //     document.body.classList.add('modal-open');
-  //   } else {
-  //     document.body.classList.remove('modal-open');
-  //   }
+          if (existingProduct) {
+            existingProduct.Qty += 1;
+            existingProduct.Total += rfidItems[i].UnitPrice;
+          } else {
+            const newProduct: ProductinCart = {
+              ProductName: rfidItems[i].ProductName,
+              Price: rfidItems[i].UnitPrice,
+              Qty: 1,
+              Size: rfidItems[i].Size,
+              Total: rfidItems[i].UnitPrice,
+              Color: rfidItems[i].Color,
+            };
+            productList.push(newProduct);
+          }
+        }
 
-  //   // Cleanup เมื่อ component unmount
-  //   return () => {
-  //     document.body.classList.remove('modal-open');
-  //   };
-  // }, [isModalOpen]);
+        // Set state ครั้งเดียวหลังจาก loop เสร็จ
+        setTagData(productList);
+      } catch (err: any) {
+        console.error('Error fetching RFID data:', err);
+      } finally {
+      }
+    };
+
+    // เรียก loadTagsData ครั้งแรกทันที
+    loadTagsData();
+
+    // ตั้ง interval เพื่อ fetch ทุกๆ 1 วินาที
+    const intervalId = setInterval(() => {
+      loadTagsData();
+    }, 1000); // 1000 ms = 1 วินาที
+
+    // Cleanup interval เมื่อ component unmount
+    return () => clearInterval(intervalId);
+  }, [refNav]); // ขึ้นอยู่กับ refNav
+
+
+
 
   const scanData = {
     items: [
@@ -205,23 +244,23 @@ const RFIDScanScreen = () => {
 
       <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-308px)] z-0" style={{ maxHeight: 'calc(100vh-292px)' }}>
         <div className="grid gap-3">
-          {scanData.items.map((item) => (
+          {tagData.map((item) => (
             <div
-              key={item.id}
+              key={item.ProductName}
               className="bg-base-100 p-4 rounded-lg shadow-md flex justify-between items-center"
             >
               <div>
-                <h2 className="text-2xl font-semibold">{item.name}</h2>
+                <h2 className="text-2xl font-semibold">{item.ProductName}</h2>
                 <p className="text-base-content/70 text-lg">
-                  Size: {item.size} | Color: {item.color} | Style: {item.style}
+                  Size: {item.Size} | Color: {item.Color}
                 </p>
               </div>
               <div className="text-right">
                 <h2 className="text-2xl font-medium">
-                  {item.price.toFixed(2)} {scanData.currency}
+                  {item.Price.toFixed(2)} {scanData.currency}
                 </h2>
                 <p className="text-base-content/70 text-lg">
-                  Qty : 10
+                  Qty : {item.Qty}
                 </p>
               </div>
             </div>
@@ -232,7 +271,7 @@ const RFIDScanScreen = () => {
         <div className="max-w-[1700px] flex justify-between items-center w-full h-full mx-auto px-[1rem]">
           <div className='w-full flex flex-col'>
             <div className="header">
-              <p className="text-4xl font-semibold">Items: {scanData.totalItems}</p>
+              <p className="text-4xl font-semibold">Items: {tagData.reduce((acc,current) => acc + current.Qty, 0)}</p>
               <p className="text-xl text-base-content/70">
                 Scanned at: {new Date(scanData.scanTime).toLocaleString()}
               </p>
@@ -249,7 +288,7 @@ const RFIDScanScreen = () => {
           <div className="flex flex-col w-full items-end">
             <div className="header">
               <p className="text-4xl font-semibold">
-                Total: {scanData.total.toFixed(2)} {scanData.currency}
+                Total: {tagData.reduce((acc,current) => acc + current.Price * current.Qty, 0)} {scanData.currency}
               </p>
               <p className="text-2xl text-base-content">tax: 7%</p>
             </div>

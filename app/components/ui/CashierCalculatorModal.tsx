@@ -130,7 +130,7 @@ export const CashierCalculatorModal: React.FC<CashierCalculatorModalProps> = ({
           // แสดง Loading ก่อนดำเนินการต่อ
           await simulateLoading();
           // หลังจาก Loading เสร็จ ดำเนินการชำระเงิน
-          onConfirm(received, changeAmount);
+          onConfirm(received, changeAmount); // ส่ง Callback กลับไปที่ Screen
           setModalVisible(false); // เริ่ม animation ปิด Modal
         },
       });

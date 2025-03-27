@@ -6,12 +6,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBill, faCreditCard, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { useCashierCalculator } from '../contexts/CashierCalculatorContext';
 import { motion } from 'framer-motion';
+import { useNav } from '../contexts/NavContext';
 import Link from 'next/link';
+import { useEffect } from 'react';
 const PaymentScreen = () => {
   const router = useRouter();
   const { showCalculator } = useCashierCalculator();
 
   const totalAmount = 307000; // ยอดรวม (ตัวอย่าง)
+  const refNav = useNav()
+
+  useEffect(() => {
+    refNav.setNavmode(false)
+    refNav.setNavname("Payment Checkout")
+  },[])
+
 
   const handlePayment = async (method: string, amountReceived?: number, change?: number) => {
     console.log(`ชำระเงินด้วย ${method}`);
@@ -96,14 +105,14 @@ const PaymentScreen = () => {
             <input type="checkbox" defaultChecked className="checkbox" />
             Remember me
           </label> */}
-            <Link href={`/RFIDScanScreen`}>
+            <Link href={`/RFIDScanScreen`} className='btn-wide'>
                 <button className='btn btn-outline btn-error btn-wide h-[4rem] text-3xl'>Back</button>
             </Link>
 
           </div>
           <div className="flex flex-row-reverse h-full w-full justify-between py-3">
             <div className="flex flex-col items-end w-full">
-              <button className='btn btn-secondary btn-wide h-[4rem] text-3xl'>
+              <button className='btn btn-secondary btn-wide h-[4rem] text-3xl' disabled>
                 COUPON
               </button>
               {/* Open the modal using document.getElementById('ID').showModal() method */}

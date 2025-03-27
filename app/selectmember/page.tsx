@@ -29,8 +29,8 @@ useEffect(() => {
                   <motion.button 
                   whileHover={{scale:1.02}}
                   whileTap={{scale:0.96}}
-                  className="btn btn-soft btn-primary w-full h-full shadow-md">
-                    <h1 className='text-6xl'>Scan in something</h1>
+                  className="btn btn-soft btn-primary w-full h-full shadow-md" disabled>
+                    <h1 className='text-6xl'>Comming Soon</h1>
                   </motion.button>
                   <h1 className='text-6xl text-primary text-center'>YES</h1>
                 </div>
