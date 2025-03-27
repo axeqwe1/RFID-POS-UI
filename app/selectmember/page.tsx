@@ -17,7 +17,7 @@ useEffect(() => {
   setNavmode(false);   // ถูกต้อง
 }, []);
   return (
-    <div id="about-page" className="max-w-[1300px] mx-auto h-full">
+    <div id="about-page" className="max-w-[1300px] mx-auto h-full page-card">
       <div className="w-full h-full pt-[2rem] px-[2rem]">
           <div id="header" className="header flex justify-center items-center">
             <h1 className='text-5xl font-bold text-primary pb-3'>Do You Have a Member?</h1>

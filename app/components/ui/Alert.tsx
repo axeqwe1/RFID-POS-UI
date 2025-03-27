@@ -98,7 +98,7 @@ export const Alert: React.FC<AlertProps> = ({
     exit: {
       opacity: 0,
       scale: 0.8,
-      transition: { duration: 0.3, ease: 'easeInOut' },
+      transition: { duration: 0.2, ease: 'easeInOut' },
     },
   };
 
@@ -127,7 +127,7 @@ export const Alert: React.FC<AlertProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed top-0 left-0 w-screen h-screen z-[9999] back-drop-alert flex items-center justify-center will-change-opacity"
+          className="fixed top-0 left-0 w-screen h-screen z-[9999] back-drop-alert flex items-center justify-center will-change-opacity overflow-visible"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
@@ -147,7 +147,7 @@ export const Alert: React.FC<AlertProps> = ({
                   <FontAwesomeIcon icon={selectedIcon} className="text-8xl text-primary mb-9" />
                 </motion.div>
                 <h3 className="font-bold text-5xl">{title}</h3>
-                <p className="py-4 text-base-content text-3xl">{message}</p>
+                <p className="py-4 text-base-content text-3xl text-center">{message}</p>
               </div>
               <div className="flex flex-row justify-between w-full h-[100px] max-w-[1100px] mx-auto">
                 <button

@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
+// สร้าง Context
 interface NavContextType {
     navname:string;
     setNavname: (name:string) => void;
@@ -19,6 +19,7 @@ export const useNav = () => {
     return context;
 }
 
+// สร้าง Provider
 interface NavProviderProps{
     children: ReactNode
 }
@@ -29,7 +30,6 @@ export const NavProvider: React.FC<NavProviderProps> = ({children}) => {
 
     return(
         <NavContext.Provider value={{navname, setNavname,navmode,setNavmode}} >
-            
             {children}
         </NavContext.Provider>
     )

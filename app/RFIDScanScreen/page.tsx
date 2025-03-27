@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '../contexts/AlertContext';
+import { Alert } from '../components/ui/Alert';
 const RFIDScanScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -183,7 +184,7 @@ const RFIDScanScreen = () => {
 
   return (
     
-    <div className="main h-full flex flex-col z-0 font-kanit scrollbar-gutter">
+    <div className="main h-full flex flex-col z-0 font-kanit page-card">
       {/* <AnimatePresence>
         {isAlertOpen && (
             <Alert
@@ -198,9 +199,10 @@ const RFIDScanScreen = () => {
               icon={faInfoCircle} // กำหนด Icon ที่ต้องการ
               autoClose={0} // ตั้งค่า 0 เพื่อไม่ให้ปิดอัตโนมัติ
             />
-
         )}
       </AnimatePresence> */}
+
+
       <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-308px)] z-0" style={{ maxHeight: 'calc(100vh-292px)' }}>
         <div className="grid gap-3">
           {scanData.items.map((item) => (

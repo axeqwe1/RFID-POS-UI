@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   const { navname, navmode } = useNav();
 
   return (
-    <div className="fixed inset-0 z-50 bg-base-200 shadow-sm h-[100px] flex justify-center items-center">
+    <div className="fixed inset-0 z-[9888] bg-base-200 shadow-sm h-[100px] flex justify-center items-center">
       <div className="navbar max-w-[1800px] mx-auto px-[3rem]">
         <div className="navbar-start flex items-center">
           <Link href="/">

@@ -9,6 +9,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import localFont from 'next/font/local';
 import { AlertProvider } from "./contexts/AlertContext";
 import { CashierCalculatorProvider } from "./contexts/CashierCalculatorContext";
+import { ModalLayout } from "./components/layout/ModalLayout";
 // เพิ่มชุดไอคอนที่ต้องการใช้งาน
 library.add(fas);
 const kanitFont = localFont({
@@ -39,18 +40,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${kanitFont.className} antialiased m-0`}
       >
+        <div className="w-full h-full">
         <NavProvider>
-          <AlertProvider>
-            <CashierCalculatorProvider>
-              <Navbar />
-              <div className="relative w-full h-[calc(100vh)] pt-[100px] bg-gray-50">
-                <PageTransition>
-                  {children}
-                </PageTransition>
+              <div className=" w-full h-[calc(100vh)] bg-gray-50">
+                  <ModalLayout>
+                    <PageTransition>
+                      {children}
+                    </PageTransition>
+                  </ModalLayout>
               </div>
-            </CashierCalculatorProvider>
-          </AlertProvider>
         </NavProvider>
+        </div>
       </body>
     </html>
   );

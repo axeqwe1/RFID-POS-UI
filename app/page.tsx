@@ -23,7 +23,7 @@ const [isLoading, setLoading] = useState(false); // เริ่มต้นเ�
   // }, [router]);
 
   return (
-    <div className="max-w-[1400px] mx-auto h-full">
+    <div className="max-w-[1400px] mx-auto h-full page-card">
 
       <Start/>
     </div>

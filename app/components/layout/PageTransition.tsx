@@ -11,6 +11,9 @@ import RFIDScanScreen from '@/app/RFIDScanScreen/page';
 import PaymentScreen from '@/app/PaymentScreen/page';
 import PaymentSuccess from '@/app/PaymentScreen/PaymentSuccess/page';
 import { Suspense } from 'react';
+import { AlertProvider } from '@/app/contexts/AlertContext';
+import { CashierCalculatorProvider } from "@/app/contexts/CashierCalculatorContext";
+import Navbar from '../ui/navbar';
 interface PageTransitionProps {
   children: ReactNode;
 }
@@ -86,6 +89,8 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   };
 
   return (
+    <>
+    <Navbar />
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         // {...handlers}
@@ -97,8 +102,15 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
         transition={{ duration: 0.2, ease: 'easeInOut' }}
         className="w-full h-full"
       >
-        {displayedPage}
+        {/* <AlertProvider>
+          <CashierCalculatorProvider> */}
+            
+            {displayedPage}
+          {/* </CashierCalculatorProvider>
+        </AlertProvider> */}
       </motion.div>
     </AnimatePresence>
+    </>
+
   );
 };

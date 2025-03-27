@@ -80,7 +80,7 @@ const PaymentSuccess = () => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+    <div className="w-full h-full flex items-center justify-center bg-gray-50 page-card">
       <motion.div
         className="bg-base-100 rounded-lg shadow-lg max-w-[800px] w-full p-8 text-center"
         variants={containerVariants}
@@ -122,27 +122,26 @@ const PaymentSuccess = () => {
           )}
           <p>วันที่/เวลา: <span className="font-semibold">{transactionDate}</span></p>
         </motion.div>
-
         {/* ปุ่มดำเนินการ */}
         <motion.div
           className="flex justify-center gap-4 mb-4"
           variants={textVariants}
         >
           <button
-            className="btn btn-info text-2xl px-6"
+            className="btn btn-info text-2xl p-6"
             onClick={handlePrint}
           >
             <FontAwesomeIcon icon={faPrint} className="mr-2" />
             พิมพ์ใบเสร็จ
           </button>
           <button
-            className="btn btn-primary text-2xl px-6"
+            className="btn btn-primary text-2xl p-6"
             onClick={() => router.push('/')}
           >
             กลับไปหน้าแรก
           </button>
           <button
-            className="btn btn-secondary text-2xl px-6"
+            className="btn btn-secondary text-2xl p-6"
             onClick={() => router.push('/PaymentScreen')}
           >
             ชำระเงินใหม่
