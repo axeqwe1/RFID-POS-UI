@@ -11,7 +11,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '../contexts/AlertContext';
 import { Alert } from '../components/ui/Alert';
-import { fetchRFID } from '../lib/api/RFIDapi';
+import { fetchRFID,stopRFID } from '../lib/api/RFIDapi';
 import { ProductinCart } from '../types/ProductInCart';
 
 const RFIDScanScreen = () => {
@@ -23,72 +23,73 @@ const RFIDScanScreen = () => {
   const router = useRouter()
 
 
-  const handleState = () => {
-    setScan(!isScan);
-  };
-
-  const handleRestart = () => {
-    setScan(false);
-    setIsModalOpen(false);
-  };
+  const handleStopRFID = async () => {
+    await stopRFID()
+  }
 
   const refNav = useNav();
 useEffect(() => {
-    const loadTagsData = async () => {
-      try {
-        const data = await fetchRFID();
-        // console.log('Fetched RFID Data:', data);
+  const loadTagsData = async () => {
+    try {
+      const data = await fetchRFID();
+      // console.log('Fetched RFID Data:', data)
+      // เข้าถึง GETDATA จาก response
+      const rfidItems = data;
 
-        // เข้าถึง GETDATA จาก response
-        const rfidItems = data;
+      // แปลงข้อมูลเป็น ProductInCart
+      const productList: ProductinCart[] = [];
+      for (let i = 0; i < rfidItems.length; i++) {
+        const existingProduct = productList.find(
+          (item) =>
+            item.ProductName === rfidItems[i].ProductName &&
+            item.Size === rfidItems[i].Size &&
+            item.Color === rfidItems[i].Color
+        );
 
-        // แปลงข้อมูลเป็น ProductInCart
-        const productList: ProductinCart[] = [];
-        for (let i = 0; i < rfidItems.length; i++) {
-          const existingProduct = productList.find(
-            (item) =>
-              item.ProductName === rfidItems[i].ProductName &&
-              item.Size === rfidItems[i].Size &&
-              item.Color === rfidItems[i].Color
-          );
-
-          if (existingProduct) {
-            existingProduct.Qty += 1;
-            existingProduct.Total += rfidItems[i].UnitPrice;
-          } else {
-            const newProduct: ProductinCart = {
-              ProductName: rfidItems[i].ProductName,
-              Price: rfidItems[i].UnitPrice,
-              Qty: 1,
-              Size: rfidItems[i].Size,
-              Total: rfidItems[i].UnitPrice,
-              Color: rfidItems[i].Color,
-            };
-            productList.push(newProduct);
-          }
+        if (existingProduct) {
+          existingProduct.Qty += 1;
+          existingProduct.Total += rfidItems[i].UnitPrice;
+        } else {
+          const newProduct: ProductinCart = {
+            ProductName: rfidItems[i].ProductName,
+            Price: rfidItems[i].UnitPrice,
+            Qty: 1,
+            Size: rfidItems[i].Size,
+            Total: rfidItems[i].UnitPrice,
+            Color: rfidItems[i].Color,
+          };
+          productList.push(newProduct);
         }
-
-        // Set state ครั้งเดียวหลังจาก loop เสร็จ
-        setTagData(productList);
-        tagData.length < 0 ? setScan(true) : setScan(false)
-      } catch (err: any) {
-        console.error('Error fetching RFID data:', err);
-      } finally {
       }
-    };
+      // เปรียบเทียบข้อมูลก่อนอัปเดต state
+      setTagData((prev) => {
+        // ถ้าข้อมูลเหมือนเดิม ไม่ต้องอัปเดต
+        if (JSON.stringify(prev) === JSON.stringify(productList)) {
+          return prev;
+        }
+        return productList;
+      });
 
-    // เรียก loadTagsData ครั้งแรกทันที
+      setScan(productList.length > 0);
+    } catch (err: any) {
+      console.error('Error fetching RFID data:', err);
+    }
+  };
+
+  loadTagsData();
+  const intervalId = setInterval(() => {
     loadTagsData();
-    setDate(new Date().toLocaleString())
-    // ตั้ง interval เพื่อ fetch ทุกๆ 1 วินาที
-    const intervalId = setInterval(() => {
-      loadTagsData();
-    }, 1000); // 1000 ms = 1 วินาที
+    setDate(new Date().toLocaleString());
+  }, 1000);
 
-    // Cleanup interval เมื่อ component unmount
-    return () => clearInterval(intervalId);
-  }, [refNav]); // ขึ้นอยู่กับ refNav
+  return () => clearInterval(intervalId);
+}, []);
 
+  useEffect(() => {
+    refNav.setNavmode(true)
+    refNav.setNavname('Add Items')
+  },[])
+  
   const scanData = {
     items: [
       {
@@ -276,14 +277,14 @@ useEffect(() => {
               </p>
             </div>
             <div className="footer mt-3">
-              <Link href={`/`} className="btn btn-outline btn-error text-3xl h-[90px] w-[40vh] flex justify-center items-center">
+              <Link onClick={handleStopRFID} href={`/`} className="btn btn-outline btn-error text-3xl h-[90px] w-[40vh] flex justify-center items-center">
                 Back
               </Link>
             </div>
           </div>
-          <button className="btn btn-outline btn-info" onClick={handleState}>
+          {/* <button className="btn btn-outline btn-info" onClick={handleState}>
             test button
-          </button>
+          </button> */}
           <div className="flex flex-col w-full items-end">
             <div className="header">
               <p className="text-4xl font-semibold">
@@ -302,8 +303,12 @@ useEffect(() => {
                           cancelText: 'ยกเลิก',
                           type: 'warning',
                           icon: faInfoCircle,
-                          onConfirm: () => router.push('/PaymentScreen'),
+                          onConfirm: () => {
+                            handleStopRFID
+                            router.push('/PaymentScreen')
+                          },
                       })
+                      
                   }}
                   className="btn btn-outline btn-accent text-3xl h-[90px] w-[40vh] flex justify-center items-center"
                 >

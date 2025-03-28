@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 const Navbar: React.FC = () => {
   const { navname, navmode } = useNav();
-
+  const refNav = useNav();
   return (
     <div className="fixed inset-0 z-[9888] bg-base-200 shadow-sm h-[100px] flex justify-center items-center">
       <div className="navbar max-w-[1800px] mx-auto px-[3rem]">
@@ -28,11 +28,9 @@ const Navbar: React.FC = () => {
         <div className="navbar-center hidden lg:flex"></div>
         {navmode ? (
           <div className="navbar-end">
-            <Link href="/">
-              <button className="border-3 btn btn-soft btn-primary w-[240px] h-[80px] font-medium text-3xl">
+              <button onClick={refNav.Restart()} className="border-3 btn btn-soft btn-primary w-[240px] h-[80px] font-medium text-3xl">
                 Restart
               </button>
-            </Link>
           </div>
         ) : (
           <div></div>

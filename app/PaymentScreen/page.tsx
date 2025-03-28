@@ -97,7 +97,7 @@ const PaymentScreen = () => {
       <div className="footer fixed bottom-0 left-0 right-0 bg-base-100 p-4 shadow-inner border-t h-[190px] z-10">
         <div className="flex justify-between items-center w-full h-full mx-auto px-[1rem] max-w-[1650px]">
           <div className="header flex flex-col h-full w-full justify-between py-3">
-            <label className='fieldset-label text-2xl flex flex-row justify-start items-center w-[35%] h-[40px]'>
+            <label className='fieldset-label text-2xl flex flex-row justify-start items-center btn-wide h-[40px]'>
               <input type="checkbox" defaultChecked className="checkbox checkbox-primary checkbox-xl border-2" />
                 <h1 className='mx-3'>Print Receipt</h1>
             </label>

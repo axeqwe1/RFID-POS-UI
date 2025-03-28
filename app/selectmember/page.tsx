@@ -7,6 +7,7 @@ import { faArrowLeft, faArrowRight, faCreditCard, faHome, faInfoCircle } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNav } from '@/app/contexts/NavContext';
 import { useEffect } from 'react';
+import { startRFID } from '../lib/api/RFIDapi';
  const SelectMemberPage = () => {
   const buttonVariants = {
     tap: { scale: 0.95, opacity: 0.8 },
@@ -16,6 +17,10 @@ useEffect(() => {
   setNavname('Self Checkout'); // ถูกต้อง
   setNavmode(false);   // ถูกต้อง
 }, []);
+
+const handleStartRFID = async () => {
+  await startRFID()
+}
   return (
     <div id="about-page" className="max-w-[1300px] mx-auto h-full page-card">
       <div className="w-full h-full pt-[2rem] px-[2rem]">
@@ -36,7 +41,7 @@ useEffect(() => {
                 </div>
               </div>
               <div className=" w-full h-[60vh]">
-                  <Link href={`/RFIDScanScreen`}>
+                  <Link onClick={handleStartRFID} href={`/RFIDScanScreen`}>
                     <div className="h-full">
                         <motion.button 
                         whileHover={{scale:1.02}}
