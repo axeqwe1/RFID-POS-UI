@@ -28,12 +28,12 @@ const handleStopRFID = async () => {
     console.log('RFID stopped successfully');
   } catch (error) {
     console.error('Error stopping RFID:', error);
-    showAlert({
-      title: 'ข้อผิดพลาด',
-      message: 'ไม่สามารถหยุด RFID ได้ กรุณาลองใหม่',
-      type: 'error',
-      icon: faExclamationCircle,
-    });
+    // showAlert({
+    //   title: 'ข้อผิดพลาด',
+    //   message: 'ไม่สามารถหยุด RFID ได้ กรุณาลองใหม่',
+    //   type: 'error',
+    //   icon: faExclamationCircle,
+    // });
     throw error; // เพื่อให้ caller รู้ว่ามี error
   }
 };
