@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
         <div className="navbar-center hidden lg:flex"></div>
         {navmode ? (
           <div className="navbar-end">
-              <button onClick={refNav.Restart()} className="border-3 btn btn-soft btn-primary w-[240px] h-[80px] font-medium text-3xl">
+              <button onClick={refNav.Restart} className="border-3 btn btn-soft btn-primary w-[240px] h-[80px] font-medium text-3xl">
                 Restart
               </button>
           </div>
