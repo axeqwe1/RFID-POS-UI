@@ -7,11 +7,11 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNav } from '@/app/contexts/NavContext';
 import Link from 'next/link';
 
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle,faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { useAlert } from '../contexts/AlertContext';
 import { Alert } from '../components/ui/Alert';
-import { fetchRFID,stopRFID } from '../lib/api/RFIDapi';
+import { fetchRFID,restartRFID,stopRFID } from '../lib/api/RFIDapi';
 import { ProductinCart } from '../types/ProductInCart';
 
 const RFIDScanScreen = () => {
@@ -22,10 +22,21 @@ const RFIDScanScreen = () => {
   const [date,setDate] = useState<string>();
   const router = useRouter()
 
-
-  const handleStopRFID = async () => {
-    await stopRFID()
+const handleStopRFID = async () => {
+  try {
+    await stopRFID();
+    console.log('RFID stopped successfully');
+  } catch (error) {
+    console.error('Error stopping RFID:', error);
+    showAlert({
+      title: 'ข้อผิดพลาด',
+      message: 'ไม่สามารถหยุด RFID ได้ กรุณาลองใหม่',
+      type: 'error',
+      icon: faExclamationCircle,
+    });
+    throw error; // เพื่อให้ caller รู้ว่ามี error
   }
+};
 
   const refNav = useNav();
 useEffect(() => {
@@ -77,6 +88,11 @@ useEffect(() => {
   };
 
   loadTagsData();
+  setDate(new Date().toLocaleString());
+  // refNav.setOnRestart(() => {
+  //     restartRFID()
+  //     loadTagsData();
+  // })
   const intervalId = setInterval(() => {
     loadTagsData();
     setDate(new Date().toLocaleString());
@@ -246,7 +262,7 @@ useEffect(() => {
         <div className="grid gap-3">
           {tagData.map((item) => (
             <div
-              key={item.ProductName}
+              key={item.ProductName + item.Size + item.Color}
               className="bg-base-100 p-4 rounded-lg shadow-md flex justify-between items-center"
             >
               <div>
@@ -302,13 +318,11 @@ useEffect(() => {
                           confirmText: 'ตกลง',
                           cancelText: 'ยกเลิก',
                           type: 'warning',
-                          icon: faInfoCircle,
-                          onConfirm: () => {
-                            handleStopRFID
-                            router.push('/PaymentScreen')
-                          },
-                      })
-                      
+                          onConfirm: async () => {
+                              await handleStopRFID(); // รอให้ handleStopRFID เสร็จ
+                              router.push('/PaymentScreen');
+                            },
+                      }) 
                   }}
                   className="btn btn-outline btn-accent text-3xl h-[90px] w-[40vh] flex justify-center items-center"
                 >
