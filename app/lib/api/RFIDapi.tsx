@@ -71,7 +71,7 @@ export const restartRFID = async () => {
 
 export const stopRFID = async () => {
     try{
-        const res = await apiService.post('/RFID/StopReading')
+        await apiService.post('/RFID/StopReading')
         console.log(`stop RFID`)
     }catch(err:any){
         throw new Error(err.request?.data?.message || err.message || 'failed to Stop RFID data')

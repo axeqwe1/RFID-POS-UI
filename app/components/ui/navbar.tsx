@@ -7,12 +7,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const Navbar: React.FC = () => {
-  const { navname, navmode,Restart } = useNav();
+  const { navname, navmode,Restart,Stop } = useNav();
   return (
     <div className="fixed inset-0 z-[9888] bg-base-200 shadow-sm h-[100px] flex justify-center items-center">
       <div className="navbar max-w-[1800px] mx-auto px-[3rem]">
         <div className="navbar-start flex items-center">
-          <Link href="/">
+          <Link href="/" onClick={Stop}>
             <Image
               src="/image/logo/NDS_Logo.jpeg"
               alt="NDS Logo"

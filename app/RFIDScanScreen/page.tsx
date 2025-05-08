@@ -38,6 +38,9 @@ const handleStopRFID = async () => {
   }
 };
 
+const handleScan = () => {
+  setScan(!isScan)
+}
   const refNav = useNav();
 useEffect(() => {
   const loadTagsData = async () => {
@@ -298,7 +301,7 @@ useEffect(() => {
               </Link>
             </div>
           </div>
-          {/* <button className="btn btn-outline btn-info" onClick={handleState}>
+          {/* <button className="btn btn-outline btn-info" onClick={handleScan}>
             test button
           </button> */}
           <div className="flex flex-col w-full items-end">

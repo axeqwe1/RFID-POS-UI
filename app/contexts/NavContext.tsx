@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, ReactNode, useCallback, useContext, useState } from "react";
-import { restartRFID } from "../lib/api/RFIDapi";
+import { restartRFID, stopRFID } from "../lib/api/RFIDapi";
 // สร้าง Context
 interface NavContextType {
     navname:string;
@@ -9,6 +9,7 @@ interface NavContextType {
     navmode:boolean;
     setNavmode: (mode:boolean) => void;
     Restart: () => void;
+    Stop:() => void;
 }
 
 const NavContext = createContext<NavContextType | undefined>(undefined);
@@ -33,9 +34,11 @@ export const NavProvider: React.FC<NavProviderProps> = ({children}) => {
     const Restart = () => {
         restartRFID()
     }
-
+    const Stop = () => {
+        stopRFID()
+    }
     return(
-        <NavContext.Provider value={{navname, setNavname,navmode,setNavmode,Restart}} >
+        <NavContext.Provider value={{navname, setNavname,navmode,setNavmode,Restart,Stop}} >
             {children}
         </NavContext.Provider>
     )
