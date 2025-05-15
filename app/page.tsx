@@ -8,7 +8,6 @@ import LoadingThreeDotsJumping from './components/ui/Loading';
 import Start from './startscreen/page';
 // import RfidMonitor from './components/RfidMonitoring'
 import { fetchProduct } from './lib/api/ProductApi';
-import RFIDWebSocket from './components/pos/RFIDWebSocket';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 export default function HomePage() {
