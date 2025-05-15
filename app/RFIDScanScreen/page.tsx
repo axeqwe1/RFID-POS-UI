@@ -1,7 +1,7 @@
 // pages/RFIDScanScreen.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNav } from '@/app/contexts/NavContext';
@@ -13,6 +13,11 @@ import { useAlert } from '../contexts/AlertContext';
 import { Alert } from '../components/ui/Alert';
 import { fetchRFID,restartRFID,stopRFID } from '../lib/api/RFIDapi';
 import { ProductinCart } from '../types/ProductInCart';
+import { useOrder } from '../contexts/OrderDetailsContext';
+import useSignalR from '../hooks/useSignalR';
+import { useSignalRContext } from '../contexts/SignalRContext';
+import RfidMonitor from '../components/RfidMonitoring';
+// import RfidMonitor from '../components/RfidMonitoring';
 
 const RFIDScanScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,223 +26,108 @@ const RFIDScanScreen = () => {
   const [tagData,setTagData] = useState<Array<ProductinCart>>([])
   const [date,setDate] = useState<string>();
   const router = useRouter()
-
-const handleStopRFID = async () => {
-  try {
-    await stopRFID();
-    console.log('RFID stopped successfully');
-  } catch (error) {
-    console.error('Error stopping RFID:', error);
-    // showAlert({
-    //   title: 'ข้อผิดพลาด',
-    //   message: 'ไม่สามารถหยุด RFID ได้ กรุณาลองใหม่',
-    //   type: 'error',
-    //   icon: faExclamationCircle,
-    // });
-    throw error; // เพื่อให้ caller รู้ว่ามี error
-  }
-};
-
-const handleScan = () => {
-  setScan(!isScan)
-}
-  const refNav = useNav();
-useEffect(() => {
-  const loadTagsData = async () => {
+  const { connection, rfidTags, error, isConnecting } = useSignalR(
+    process.env.NEXT_PUBLIC_SIGNALR_URL || 'https://localhost:7233/rfidHub'
+  );
+    
+  const handleStopRFID = async () => {
     try {
-      const data = await fetchRFID();
-      // console.log('Fetched RFID Data:', data)
-      // เข้าถึง GETDATA จาก response
-      const rfidItems = data;
-
-      // แปลงข้อมูลเป็น ProductInCart
-      const productList: ProductinCart[] = [];
-      for (let i = 0; i < rfidItems.length; i++) {
-        const existingProduct = productList.find(
-          (item) =>
-            item.ProductName === rfidItems[i].ProductName &&
-            item.Size === rfidItems[i].Size &&
-            item.Color === rfidItems[i].Color
-        );
-
-        if (existingProduct) {
-          existingProduct.Qty += 1;
-          existingProduct.Total += rfidItems[i].UnitPrice;
-        } else {
-          const newProduct: ProductinCart = {
-            ProductName: rfidItems[i].ProductName,
-            Price: rfidItems[i].UnitPrice,
-            Qty: 1,
-            Size: rfidItems[i].Size,
-            Total: rfidItems[i].UnitPrice,
-            Color: rfidItems[i].Color,
-          };
-          productList.push(newProduct);
-        }
-      }
-      // เปรียบเทียบข้อมูลก่อนอัปเดต state
-      setTagData((prev) => {
-        // ถ้าข้อมูลเหมือนเดิม ไม่ต้องอัปเดต
-        if (JSON.stringify(prev) === JSON.stringify(productList)) {
-          return prev;
-        }
-        return productList;
-      });
-
-      setScan(productList.length > 0);
-    } catch (err: any) {
-      console.error('Error fetching RFID data:', err);
+      await stopRFID();
+      console.log('RFID stopped successfully');
+    } catch (error) {
+      console.error('Error stopping RFID:', error);
+      // showAlert({
+      //   title: 'ข้อผิดพลาด',
+      //   message: 'ไม่สามารถหยุด RFID ได้ กรุณาลองใหม่',
+      //   type: 'error',
+      //   icon: faExclamationCircle,
+      // });
+      throw error; // เพื่อให้ caller รู้ว่ามี error
     }
   };
 
-  loadTagsData();
-  setDate(new Date().toLocaleString());
-  // refNav.setOnRestart(() => {
-  //     restartRFID()
-  //     loadTagsData();
-  // })
-  const intervalId = setInterval(() => {
+  const handleScan = () => {
+    setScan(!isScan)
+  }
+
+  const refNav = useNav();
+  const refOrder = useOrder();
+  const refSignalR = useSignalRContext()
+  const rfidData = refSignalR.data;
+  useEffect(() => {
+    const loadTagsData = async () => {
+      try {
+        const data = rfidData;
+        // console.log('Fetched RFID Data:', data)
+        // เข้าถึง GETDATA จาก response
+        const rfidItems = data;
+        // แปลงข้อมูลเป็น ProductInCart
+        const productList: ProductinCart[] = [];
+        for (let i = 0; i < rfidItems.length; i++) {
+          const existingProduct = productList.find(
+            (item) =>
+              item.ProductName === rfidItems[i].productName &&
+              item.Size === rfidItems[i].size &&
+              item.Color === rfidItems[i].color
+          );
+          if (existingProduct) {
+            existingProduct.Qty += 1;
+            existingProduct.Total += rfidItems[i].unitPrice;
+          }
+          else {
+            const newProduct: ProductinCart = {
+              ProductName: rfidItems[i].productName,
+              Price: rfidItems[i].price,
+              Qty: 1,
+              Size: rfidItems[i].size,
+              Total: rfidItems[i].price,
+              Color: rfidItems[i].color,
+            };
+            productList.push(newProduct);
+          }
+        }
+        // เปรียบเทียบข้อมูลก่อนอัปเดต state
+        setTagData((prev) => {
+          // ถ้าข้อมูลเหมือนเดิม ไม่ต้องอัปเดต
+          if (JSON.stringify(prev) === JSON.stringify(productList)) {
+            return prev;
+          }
+          return productList;
+        });
+        refOrder.setProducts(productList)
+        refOrder.setAmountTotal(productList.reduce((acc,current) => acc + current.Price * current.Qty, 0))
+        refOrder.setTotalItem(productList.reduce((acc,current) => acc + current.Qty, 0))
+        setScan(productList.length > 0);
+      } catch (err: any) {
+        console.error('Error fetching RFID data:', err);
+      }
+    };
+
     loadTagsData();
     setDate(new Date().toLocaleString());
-  }, 1000);
+    // refNav.setOnRestart(() => {
+    //     restartRFID()
+    //     loadTagsData();
+    // })
 
-  return () => clearInterval(intervalId);
-}, []);
 
+    const intervalId = setInterval(() => {
+      loadTagsData();
+      setDate(new Date().toLocaleString());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [rfidData]);
   useEffect(() => {
     refNav.setNavmode(true)
     refNav.setNavname('Add Items')
   },[])
-  
-  const scanData = {
-    items: [
-      {
-        id: '001',
-        name: 'Cotton T-Shirt',
-        price: 299.0,
-        size: 'M',
-        color: 'Blue',
-        style: 'Casual',
-      },
-      {
-        id: '002',
-        name: 'Denim Jeans',
-        price: 799.0,
-        size: 'L',
-        color: 'Black',
-        style: 'Slim Fit',
-      },
-      {
-        id: '003',
-        name: 'Leather Jacket',
-        price: 1999.0,
-        size: 'S',
-        color: 'Brown',
-        style: 'Vintage',
-      },
-      {
-        id: '004',
-        name: 'Wool Sweater',
-        price: 599.0,
-        size: 'M',
-        color: 'Gray',
-        style: 'Cozy',
-      },
-      {
-        id: '005',
-        name: 'Chino Pants',
-        price: 699.0,
-        size: 'L',
-        color: 'Khaki',
-        style: 'Casual',
-      },
-      {
-        id: '006',
-        name: 'Silk Scarf',
-        price: 199.0,
-        size: 'One Size',
-        color: 'Red',
-        style: 'Elegant',
-      },
-      {
-        id: '007',
-        name: 'Sneakers',
-        price: 999.0,
-        size: '42',
-        color: 'White',
-        style: 'Sporty',
-      },
-      {
-        id: '008',
-        name: 'Hoodie',
-        price: 499.0,
-        size: 'M',
-        color: 'Black',
-        style: 'Casual',
-      },
-      {
-        id: '009',
-        name: 'Blazer',
-        price: 1499.0,
-        size: 'S',
-        color: 'Navy',
-        style: 'Formal',
-      },
-      {
-        id: '010',
-        name: 'Polo Shirt',
-        price: 399.0,
-        size: 'M',
-        color: 'Green',
-        style: 'Casual',
-      },
-      {
-        id: '011',
-        name: 'Leather Belt',
-        price: 299.0,
-        size: 'L',
-        color: 'Black',
-        style: 'Classic',
-      },
-      {
-        id: '012',
-        name: 'Winter Coat',
-        price: 2499.0,
-        size: 'L',
-        color: 'Dark Gray',
-        style: 'Warm',
-      },
-    ],
-    total: 3097.0,
-    currency: 'THB',
-    scanTime: '2025-03-24T10:30:00Z',
-    totalItems: 10,
-  };
 
   const handleConfirmTransaction = () => {
      router.push('/PaymentScreen')
   };
 
-  const modalVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: 50,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
+
   const { showAlert } = useAlert();
 
   return (
@@ -259,11 +149,10 @@ useEffect(() => {
             />
         )}
       </AnimatePresence> */}
-
-
+      {/* <RfidMonitor/> */}
       <div className="body py-9 px-[4rem] overflow-y-auto h-[calc(100vh-308px)] z-0" style={{ maxHeight: 'calc(100vh-292px)' }}>
         <div className="grid gap-3">
-          {tagData.map((item) => (
+          {refOrder.products.map((item) => (
             <div
               key={item.ProductName + item.Size + item.Color}
               className="bg-base-100 p-4 rounded-lg shadow-md flex justify-between items-center"
@@ -276,7 +165,7 @@ useEffect(() => {
               </div>
               <div className="text-right">
                 <h2 className="text-2xl font-medium">
-                  {item.Price.toFixed(2)} {scanData.currency}
+                  {item.Price.toFixed(2)} Bath
                 </h2>
                 <p className="text-base-content/70 text-lg">
                   Qty : {item.Qty}
@@ -307,7 +196,7 @@ useEffect(() => {
           <div className="flex flex-col w-full items-end">
             <div className="header">
               <p className="text-4xl font-semibold">
-                Total: {tagData.reduce((acc,current) => acc + current.Price * current.Qty, 0)} {scanData.currency}
+                Total: {tagData.reduce((acc,current) => acc + current.Price * current.Qty, 0).toFixed(2)} Bath
               </p>
               <p className="text-2xl text-base-content">tax: 7%</p>
             </div>
@@ -317,7 +206,7 @@ useEffect(() => {
                   onClick={() => {
                       showAlert({
                           title: 'แจ้งเตือน',
-                          message: 'คุณต้องการสั่งซื้อจำนวน 4 ชิ้น หรือไม่?',
+                          message: `คุณต้องการสั่งซื้อจำนวน ${tagData.reduce((acc,current) => acc + current.Qty, 0)} ชิ้น หรือไม่?`,
                           confirmText: 'ตกลง',
                           cancelText: 'ยกเลิก',
                           type: 'warning',

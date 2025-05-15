@@ -9,16 +9,18 @@ import { motion } from 'framer-motion';
 import { useNav } from '../contexts/NavContext';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { useOrder } from '../contexts/OrderDetailsContext';
 const PaymentScreen = () => {
   const router = useRouter();
   const { showCalculator } = useCashierCalculator();
-
-  const totalAmount = 307000; // ยอดรวม (ตัวอย่าง)
+  const refOrder = useOrder()
+  const totalAmount = refOrder.AmountTotal; // ยอดรวม (ตัวอย่าง)
   const refNav = useNav()
 
   useEffect(() => {
     refNav.setNavmode(false)
     refNav.setNavname("Payment Checkout")
+    console.log(refOrder.AmountTotal)
   },[])
 
 
@@ -47,18 +49,18 @@ const PaymentScreen = () => {
             <div className="border-b-2 border-gray-400 w-full">
               <div className="flex flex-row justify-between  mx-auto py-6 px-12">
                 <div>
-                  <h1 className='text-2xl'>Total Item (10 Item)</h1>
+                  <h1 className='text-2xl'>Total Item ({refOrder.TotalItem})</h1>
                   <h2 className='text-2xl'>Tax</h2>
                 </div>
                 <div>
-                  <h1 className='text-2xl'>80.00 Bath</h1>
+                  <h1 className='text-2xl'>{refOrder.AmountTotal.toFixed(2)} Bath</h1>
                   <h2 className='text-2xl'>0.00 Bath</h2>
                 </div>
               </div>
             </div>
             <div className='flex flex-row justify-between w-full py-6 px-12'>
               <h1 className='text-2xl'>Total</h1>
-              <h1 className='text-2xl'>39.00 Bath</h1>
+              <h1 className='text-2xl'>{refOrder.AmountTotal.toFixed(2)} Bath</h1>
             </div>
           </div>
           <div className="border-2 border-gray-100 rounded-md w-full">

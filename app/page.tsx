@@ -6,9 +6,14 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 import LoadingThreeDotsJumping from './components/ui/Loading';
 import Start from './startscreen/page';
+// import RfidMonitor from './components/RfidMonitoring'
 import { fetchProduct } from './lib/api/ProductApi';
 import RFIDWebSocket from './components/pos/RFIDWebSocket';
+import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 export default function HomePage() {
+  // Dynamic import เพื่อป้องกันการ render ฝั่ง Server
+
 // const [products, setProducts] = useState<any[]>([]);
 //   const [loading, setLoading] = useState(false);
 //   const [error, setError] = useState<string | null>(null);
@@ -58,6 +63,7 @@ export default function HomePage() {
         </div>
       )} */}
       <Start/>
+      {/* <RfidMonitor /> */}
     </div>
-  ); // หรือแสดง loading state
+  ); // หรือแสดง loading stated
 }

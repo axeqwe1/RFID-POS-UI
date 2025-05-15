@@ -2,6 +2,7 @@
 
 import { createContext, ReactNode, useCallback, useContext, useState } from "react";
 import { restartRFID, stopRFID } from "../lib/api/RFIDapi";
+import { useSignalRContext } from "./SignalRContext";
 // สร้าง Context
 interface NavContextType {
     navname:string;
@@ -30,9 +31,10 @@ interface NavProviderProps{
 export const NavProvider: React.FC<NavProviderProps> = ({children}) => {
     const [navname,setNavname] = useState<string>('Self Checkout')
     const [navmode,setNavmode] = useState<boolean>(true)
-
+    const signalRContext = useSignalRContext()
     const Restart = () => {
-        restartRFID()
+        signalRContext.setData([])
+        console.log("Restart")
     }
     const Stop = () => {
         stopRFID()

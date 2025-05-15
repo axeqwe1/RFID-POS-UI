@@ -10,21 +10,21 @@ interface RFIDRequest {
 
 // Interface สำหรับข้อมูล RFID แต่ละชิ้น (รวมข้อมูล Product)
 interface RFIDProduct {
-  ProductId: number;
-  ProductCode: string;
-  ProductName: string;
-  RFIDData: string;
-  CategoryId: number;
-  UnitPrice: number;
-  SKUCode: string;
-  Color: string;
-  Size: string;
-  QuantityInStock: number;
-  IsActive: boolean;
-  Status: number;
-  Remark: string;
-  CreateDate: string; // รูปแบบ "/Date(1732467600000)/"
-  UpdateDate: string; // รูปแบบ "/Date(1732467600000)/"
+  productId: number;
+  productCode: string;
+  productName: string;
+  rfidData: string;
+  categoryId: number;
+  unitPrice: number;
+  skuCode: string;
+  color: string;
+  size: string;
+  quantityInStock: number;
+  isActive: boolean;
+  status: number;
+  remark: string;
+  createDate: string; // รูปแบบ "/Date(1732467600000)/"
+  updateDate: string; // รูปแบบ "/Date(1732467600000)/"
 }
 
 // Interface สำหรับ response จาก API
@@ -38,7 +38,7 @@ interface RFIDResponse extends Array<RFIDProduct> {
 export const fetchRFID = async (params?: RFIDRequest): Promise<RFIDResponse> => {
 
   try {
-    const res = await apiService.get('/RFID/GetTags', { params });
+    const res = await apiService.get('/rfidApi/RFID/GetTags', { params });
     const data = res.data;
     if (!data || !Array.isArray(data)) {
       throw new Error('Invalid Response Data from server');
@@ -51,7 +51,7 @@ export const fetchRFID = async (params?: RFIDRequest): Promise<RFIDResponse> => 
 
 export const startRFID = async () => {
     try{
-        const res = await apiService.post('/RFID/StartReading')
+        const res = await apiService.post('/rfidApi/RFID/StartReading')
         console.log(`start RFID`)
     }
     catch(err:any){
@@ -61,8 +61,8 @@ export const startRFID = async () => {
 
 export const restartRFID = async () => {
     try{
-        await apiService.post('/RFID/ReStartReading')
-        await fetchRFID()
+        await apiService.post('/rfidApi/RFID/ReStartReading')
+        
         console.log('restart')
     }catch(err:any){
         throw new Error(err.request?.data?.message || err.message || 'failed to Restart RFID data')
@@ -71,7 +71,7 @@ export const restartRFID = async () => {
 
 export const stopRFID = async () => {
     try{
-        await apiService.post('/RFID/StopReading')
+        await apiService.post('/rfidApi/RFID/StopReading')
         console.log(`stop RFID`)
     }catch(err:any){
         throw new Error(err.request?.data?.message || err.message || 'failed to Stop RFID data')

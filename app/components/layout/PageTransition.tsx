@@ -24,13 +24,13 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const [currentPath, setCurrentPath] = useState(pathname);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const pages: { [key: string]: ReactNode } = {
-    '/': <HomePage />,
-    '/selectmember': <SelectMemberPage />,
-    '/RFIDScanScreen': <RFIDScanScreen/>,
-    '/PaymentScreen': <PaymentScreen/>,
-    '/PaymentScreen/PaymentSuccess': <Suspense><PaymentSuccess/></Suspense>
-  };
+const pages: { [key: string]: () => ReactNode } = {
+  '/': () => <HomePage />,
+  '/selectmember': () => <SelectMemberPage />,
+  '/RFIDScanScreen': () => <RFIDScanScreen />,
+  '/PaymentScreen': () => <PaymentScreen />,
+  '/PaymentScreen/PaymentSuccess': () => <Suspense><PaymentSuccess /></Suspense>
+};
 
   const [displayedPage, setDisplayedPage] = useState<ReactNode>(pages[pathname] || children);
 
@@ -50,7 +50,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
       await waitForAnimation();
 
       console.log('Animation complete, updating page to:', newPathname);
-      setDisplayedPage(pages[newPathname] || children);
+      setDisplayedPage(pages[newPathname]?.()  || children);
       setIsAnimating(false);
     }
   };
@@ -111,6 +111,5 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
       </motion.div>
     </AnimatePresence>
     </>
-
   );
 };
