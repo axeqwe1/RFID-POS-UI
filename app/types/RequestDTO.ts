@@ -1,4 +1,4 @@
-export interface ProductinCart {
+export interface OrderRequset {
   ProductId: number;
   ProductName: string;
   SizeId:number;
@@ -8,4 +8,6 @@ export interface ProductinCart {
   Price: number;
   Qty: number;
   Total: number;
+  PaymentMethod: string;
 }
+

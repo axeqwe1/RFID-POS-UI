@@ -64,23 +64,23 @@ const pages: { [key: string]: () => ReactNode } = {
     }
   }, [pathname]);
 
-  const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (pathname === '/' && !isAnimating) {
-        console.log('Swiped left, going to /pages/about');
-        setIsAnimating(true);
-        router.push('/selectmember');
-      }
-    },
-    onSwipedRight: () => {
-      if (pathname === '/pages/about' && !isAnimating) {
-        console.log('Swiped right, going back');
-        setIsAnimating(true);
-        router.back();
-      }
-    },
-    delta: 50,
-  });
+  // const handlers = useSwipeable({
+  //   onSwipedLeft: () => {
+  //     if (pathname === '/' && !isAnimating) {
+  //       console.log('Swiped left, going to /pages/about');
+  //       setIsAnimating(true);
+  //       router.push('/selectmember');
+  //     }
+  //   },
+  //   onSwipedRight: () => {
+  //     if (pathname === '/pages/about' && !isAnimating) {
+  //       console.log('Swiped right, going back');
+  //       setIsAnimating(true);
+  //       router.back();
+  //     }
+  //   },
+  //   delta: 50,
+  // });
 
   const variants = {
     initial: { scale: 0.95, opacity: 0 },

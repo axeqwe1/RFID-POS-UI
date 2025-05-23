@@ -10,19 +10,28 @@ import { useNav } from '../contexts/NavContext';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useOrder } from '../contexts/OrderDetailsContext';
+import { startRFID } from '../lib/api/RFIDapi';
+import useSignalR from '../hooks/useSignalR';
+import { useSignalRContext } from '../contexts/SignalRContext';
 const PaymentScreen = () => {
   const router = useRouter();
   const { showCalculator } = useCashierCalculator();
   const refOrder = useOrder()
   const totalAmount = refOrder.AmountTotal; // ยอดรวม (ตัวอย่าง)
   const refNav = useNav()
+  const refSignalR = useSignalRContext()
 
   useEffect(() => {
     refNav.setNavmode(false)
     refNav.setNavname("Payment Checkout")
-    console.log(refOrder.AmountTotal)
+    console.log(refOrder.products)
   },[])
 
+
+  const handleBackPage = async () => {
+    refSignalR.setData([])
+    await startRFID()
+  }
 
   const handlePayment = async (method: string, amountReceived?: number, change?: number) => {
     console.log(`ชำระเงินด้วย ${method}`);
@@ -107,7 +116,7 @@ const PaymentScreen = () => {
             <input type="checkbox" defaultChecked className="checkbox" />
             Remember me
           </label> */}
-            <Link href={`/RFIDScanScreen`} className='btn-wide'>
+            <Link onClick={handleBackPage} href={`/RFIDScanScreen`} className='btn-wide'>
                 <button className='btn btn-outline btn-error btn-wide h-[4rem] text-3xl'>Back</button>
             </Link>
 

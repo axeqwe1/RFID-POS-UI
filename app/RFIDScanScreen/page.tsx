@@ -26,6 +26,10 @@ const RFIDScanScreen = () => {
   const [tagData,setTagData] = useState<Array<ProductinCart>>([])
   const [date,setDate] = useState<string>();
   const router = useRouter()
+  const refNav = useNav();
+  const refOrder = useOrder();
+  const refSignalR = useSignalRContext()
+  const rfidData = refSignalR.data;
   const { connection, rfidTags, error, isConnecting } = useSignalR(
     process.env.NEXT_PUBLIC_SIGNALR_URL || 'https://localhost:7233/rfidHub'
   );
@@ -33,6 +37,7 @@ const RFIDScanScreen = () => {
   const handleStopRFID = async () => {
     try {
       await stopRFID();
+      
       console.log('RFID stopped successfully');
     } catch (error) {
       console.error('Error stopping RFID:', error);
@@ -45,15 +50,15 @@ const RFIDScanScreen = () => {
       throw error; // เพื่อให้ caller รู้ว่ามี error
     }
   };
-
+  const backToMenu = async () => {
+    await stopRFID();
+    refSignalR.resetData()
+  }
   const handleScan = () => {
     setScan(!isScan)
   }
 
-  const refNav = useNav();
-  const refOrder = useOrder();
-  const refSignalR = useSignalRContext()
-  const rfidData = refSignalR.data;
+
   useEffect(() => {
     const loadTagsData = async () => {
       try {
@@ -72,15 +77,18 @@ const RFIDScanScreen = () => {
           );
           if (existingProduct) {
             existingProduct.Qty += 1;
-            existingProduct.Total += rfidItems[i].unitPrice;
+            existingProduct.Total += rfidItems[i].price;
           }
           else {
             const newProduct: ProductinCart = {
+              ProductId: rfidItems[i].productId,
               ProductName: rfidItems[i].productName,
               Price: rfidItems[i].price,
               Qty: 1,
+              SizeId:rfidItems[i].sizeId,
               Size: rfidItems[i].size,
               Total: rfidItems[i].price,
+              ColorId:rfidItems[i].colorId,
               Color: rfidItems[i].color,
             };
             productList.push(newProduct);
@@ -185,7 +193,7 @@ const RFIDScanScreen = () => {
               </p>
             </div>
             <div className="footer mt-3">
-              <Link onClick={handleStopRFID} href={`/`} className="btn btn-outline btn-error text-3xl h-[90px] w-[40vh] flex justify-center items-center">
+              <Link onClick={backToMenu} href={`/`} className="btn btn-outline btn-error text-3xl h-[90px] w-[40vh] flex justify-center items-center">
                 Back
               </Link>
             </div>

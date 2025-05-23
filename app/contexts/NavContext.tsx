@@ -33,7 +33,7 @@ export const NavProvider: React.FC<NavProviderProps> = ({children}) => {
     const [navmode,setNavmode] = useState<boolean>(true)
     const signalRContext = useSignalRContext()
     const Restart = () => {
-        signalRContext.setData([])
+        signalRContext.resetData()
         console.log("Restart")
     }
     const Stop = () => {

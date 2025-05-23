@@ -6,7 +6,7 @@ import { ProductinCart } from "../types/ProductInCart";
 interface SignalRContext {
     data:any[];
     setData: (data:SetStateAction<any[]>) => void;
-    
+    resetData : () => void;
 }
 
 const SignalRContext = createContext<SignalRContext | undefined>(undefined);
@@ -27,8 +27,11 @@ interface SignalRProviderProps{
 export const SignalRProvider: React.FC<SignalRProviderProps> = ({children}) => {
     const [data,setData] = useState<any[]>([])
     
+    const resetData = () => {
+        setData([])
+    }
     return(
-        <SignalRContext.Provider value={{data, setData}} >
+        <SignalRContext.Provider value={{data, setData,resetData}} >
             {children}
         </SignalRContext.Provider>
     )
